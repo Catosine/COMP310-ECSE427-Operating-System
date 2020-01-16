@@ -36,4 +36,5 @@ int main(){
     free((void *)cmd);
     
     return 0;
+
 }
