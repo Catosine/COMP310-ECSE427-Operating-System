@@ -9,8 +9,8 @@ A `makefile` is provided together with this project. You may use the instruction
 # To compile the project
 make mysh
 
-# To run the shell
-./mysh
+# To test the shell
+make test
 
 # Clean
 make clean

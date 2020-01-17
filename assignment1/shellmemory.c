@@ -29,7 +29,7 @@ int initMem(int size){
 
 int existMem(char * var){
     for(int i = 0; i<size; i++){
-        if(strcmp(memory[i].var, var)==0){
+        if(strcmp((memory+i)->var, var)==0){
             return i;
         }
     }
@@ -40,16 +40,20 @@ int existMem(char * var){
 int updateMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
-        strcpy(memory[idx].value, value);
+        struct MEM toUpdate = *(memory+idx);
+        toUpdate.value = value;
+        memcpy(memory+idx, &toUpdate, sizeof(struct MEM));
         return 0;
     }
     return -1;
 }
 
 int createMem(char * var, char * value){
-    if(existMem(var)<0){
-        strcpy(memory[size].var, var);
-        strcpy(memory[size].value, value);
+    if(existMem(var)<0&&size<mem_len){
+        struct MEM newItem;
+        newItem.var = var;
+        newItem.value = value;
+        memcpy(memory+size, &newItem, sizeof(struct MEM));
         size++;
         return 0;
     }
@@ -59,7 +63,8 @@ int createMem(char * var, char * value){
 int readMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
-        strcpy(value, memory[idx].value);
+        struct MEM toRead = *(memory+idx);
+        value = toRead.value;
         return 0;
     }
     return -1;
@@ -69,8 +74,8 @@ int deleteMem(char * var, char * value){
     int idx = existMem(var);
     if(idx>=0){
         for(; idx<size-1; idx++){
-            strcpy(memory[idx].var, memory[idx+1].var);
-            strcpy(memory[idx].value, memory[idx+1].value);
+            struct MEM next = *(memory+idx+1);
+            memcpy(memory+idx, &next, sizeof(struct MEM));
         }
         size--;
     }
@@ -87,5 +92,6 @@ int setMem(char * var, char * value){
 
 int clearMem(){
     free(memory);
+    memory = NULL;
     return 0;
 }

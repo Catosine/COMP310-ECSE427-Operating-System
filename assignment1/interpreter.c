@@ -85,10 +85,10 @@ int quit(){
 }
 
 int there_is_nothing_to_do_with_get(char ** tokenized_word){
-    // if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "set")!=0){
-    //     printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
-    //     return -1;
-    // }
+    if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "set")!=0){
+        printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
+        return -1;
+    }
     return setMem(*(tokenized_word+1), *(tokenized_word+2));
 }
 
