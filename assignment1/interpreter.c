@@ -1,18 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "shellmemory.h"
 
 // Declaration of main functions
 int parseInput(char * cmd);
 int interpreter(char ** tokenized_words);
 
 // Delcaration of executions
-int get_help_info();
+int help();
+int quit();
+int there_is_nothing_to_do_with_get(char ** tokenized_words);
+int there_is_nothing_to_do_with_printf(char ** tokenized_words);
 
 //--------------------- Start of Code Body ---------------------//
 
 int interpreter(char ** tokenized_words){
-    return 0;
+    if(strcmp(*tokenized_words, "help")==0){
+        return help();
+    } else if(strcmp(*tokenized_words, "quit")==0){
+        return quit();
+    } else if(strcmp(*tokenized_words, "set")==0){
+        return there_is_nothing_to_do_with_get(tokenized_words);
+    } else if(strcmp(*tokenized_words, "print")==0){
+        return there_is_nothing_to_do_with_printf(tokenized_words);
+    } else if(strcmp(*tokenized_words, "run")==0){
+        return 1;
+    } else {
+        return 1;
+    }
 }
 
 int parseInput(char * cmd){
@@ -25,7 +41,6 @@ int parseInput(char * cmd){
 
     // Skip all white spaces in the front of cmd
     for(start = 0; *(cmd+start)==' ' && start<1000; start++);
-
     // Tokenized the cmd 
     while(*(cmd+start) != '\0' && *(cmd+start) != '\n'){
 
@@ -51,7 +66,7 @@ int parseInput(char * cmd){
 
 }
 
-int get_help_info(){
+int help(){
     printf("COMMAND\t\t\tDESCRIPTION\n\n");
     printf("help\t\t\tDisplays all the commands\n");
     printf("quit\t\t\tExits / terminates the shell with “Bye!”\n");
@@ -59,4 +74,33 @@ int get_help_info(){
     printf("print VAR\t\tDisplays the STRING assigned to VAR\n");
     printf("run SCRIPT.TXT\t\tExecutes the file SCRIPT.TXT\n");
     return 0;
+}
+
+int quit(){
+    printf("Bye!\n");
+    clearMem();
+    return 2;
+}
+
+int there_is_nothing_to_do_with_get(char ** tokenized_word){
+    // if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "set")!=0){
+    //     printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
+    //     return -1;
+    // }
+    return setMem(*(tokenized_word+1), *(tokenized_word+2));
+}
+
+int there_is_nothing_to_do_with_printf(char ** tokenized_word){
+    if(strcmp(*(tokenized_word+2), "\0")!=0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "print")!=0){
+        printf("Message: Invalid print command format. Please follow: print VAR\n");
+        return -1;
+    }
+    char * value;
+    int status = readMem(*(tokenized_word+1), value);
+    if(status==0){
+        printf("%s\n", value);
+    } else {
+        printf("Message: Variable does not exists\n");
+    }
+    return status;
 }
