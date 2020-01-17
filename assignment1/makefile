@@ -7,5 +7,8 @@ $(prom): $(obj)
 %.o: %.c
 	gcc -c $<
 
+test: $(prom)
+	prom < testfile.txt
+
 clean:
 	rm -f $(obj) $(prom)

@@ -36,7 +36,7 @@ int main(){
         printf("%s", display);
 
         fgets(cmd, 999, stdin);
-
+        
         int errorCode = parseInput(cmd);
         switch(errorCode){
             case -1:

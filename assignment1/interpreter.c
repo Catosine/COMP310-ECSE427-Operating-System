@@ -42,6 +42,7 @@ int parseInput(char * cmd){
     // Skip all white spaces in the front of cmd
     for(start = 0; *(cmd+start)==' ' && start<1000; start++);
     // Tokenized the cmd 
+    int times = 0;
     while(*(cmd+start) != '\0' && *(cmd+start) != '\n'){
 
         for(idx = 0; *(cmd+start) != '\0' && *(cmd+start) != '\n' && *(cmd+start) != '\t' && *(cmd+start) != ' ' && start<1000; start++, idx++){
@@ -53,10 +54,11 @@ int parseInput(char * cmd){
         *(tmp+idx) = '\0';
 
         // Filter out in-line spaces
-        if(*(tmp)!='\0'){*(words+offset++) = strdup(tmp);}
+        if(strcmp(tmp, "\0")!=0){
+            *(words+offset++) = strdup(tmp);
+        }
 
         start++;
-
     }
 
     // Suggest the end of the tokens
