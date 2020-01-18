@@ -90,6 +90,19 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
     if(zero_idx<1){
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
+    } else if(zero_idx>3){
+        // TODO: bugs here
+        printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
+        return -1;
+        // for(; zero_idx>2; zero_idx--){
+        //     char * temp = (char *)malloc(sizeof(**(tokenized_word+zero_idx))+sizeof(**(tokenized_word+zero_idx-1))+2);
+        //     strcat(temp, *(tokenized_word+zero_idx+1));
+        //     strcat(temp, " ");
+        //     strcat(temp, *(tokenized_word+zero_idx));
+        //     int status = setMem(*(tokenized_word+1), temp);
+        //     free(temp);
+        //     return status;
+        // } 
     }
     return setMem(*(tokenized_word+1), *(tokenized_word+2));
 }
