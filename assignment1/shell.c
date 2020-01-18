@@ -52,6 +52,9 @@ int main(){
             case 2:
                 //Exit
                 goto sayounara;
+            case 3:
+                //Exit a script;
+                break;
         }
 
     }

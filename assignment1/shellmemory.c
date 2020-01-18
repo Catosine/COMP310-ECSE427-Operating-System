@@ -27,6 +27,7 @@ int initMem(int size){
     return 0;
 }
 
+// Finished Implementation
 int existMem(char * var){
     for(int i = 0; i<size; i++){
         if(strcmp((memory+i)->var, var)==0){
@@ -37,6 +38,7 @@ int existMem(char * var){
     return -1;
 }
 
+// Finished Implementation
 int updateMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
@@ -46,6 +48,7 @@ int updateMem(char * var, char * value){
     return -1;
 }
 
+// Finished Implementation
 int createMem(char * var, char * value){
     if(existMem(var)<0&&size<mem_len){
         struct MEM newItem;
@@ -60,6 +63,7 @@ int createMem(char * var, char * value){
     return -1;
 }
 
+// Finished Implementation
 int readMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
@@ -81,6 +85,7 @@ int deleteMem(char * var, char * value){
     return 0;
 }
 
+// Finished Implementation
 int setMem(char * var, char * value){
     if(updateMem(var, value)==0){
         return 0;

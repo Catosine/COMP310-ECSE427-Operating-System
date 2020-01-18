@@ -85,7 +85,9 @@ int quit(){
 }
 
 int there_is_nothing_to_do_with_get(char ** tokenized_word){
-    if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0){
+    int zero_idx = 0;
+    for(;strcmp(*(tokenized_word+zero_idx), "\0")!=0; zero_idx++);
+    if(zero_idx<1){
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     }
@@ -93,7 +95,9 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
 }
 
 int there_is_nothing_to_do_with_printf(char ** tokenized_word){
-    if(strcmp(*(tokenized_word+2), "\0")!=0||strcmp(*(tokenized_word+1), "\0")==0){
+    int zero_idx = 0;
+    for(;strcmp(*(tokenized_word+zero_idx), "\0")!=0; zero_idx++);
+    if(zero_idx<=1){
         printf("Message: Invalid print command format. Please follow: print VAR\n");
         return -1;
     }
