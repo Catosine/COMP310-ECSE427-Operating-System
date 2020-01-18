@@ -15,3 +15,11 @@ make test
 # Clean
 make clean
 ```
+
+## Commands
+Here are available commands listed below:
+> `help` - List all avaliable commands  
+> `quit` - Exit the current process  
+> `set VAR STRING` - Set variable VAR with string STRING  
+> `print VAR` - Print the value of variable VAR  
+> `run SCRIPT.txt` - Run the script SCRIPT  
