@@ -40,9 +40,7 @@ int existMem(char * var){
 int updateMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
-        struct MEM toUpdate = *(memory+idx);
-        toUpdate.value = value;
-        memcpy(memory+idx, &toUpdate, sizeof(struct MEM));
+        strcpy((memory+idx)->value, value);
         return 0;
     }
     return -1;
@@ -51,8 +49,10 @@ int updateMem(char * var, char * value){
 int createMem(char * var, char * value){
     if(existMem(var)<0&&size<mem_len){
         struct MEM newItem;
-        newItem.var = var;
-        newItem.value = value;
+        newItem.var = (char *)malloc(sizeof(var));
+        newItem.value = (char *)malloc(sizeof(value));
+        memcpy(newItem.var, var, sizeof(var));
+        memcpy(newItem.value, value, sizeof(value));
         memcpy(memory+size, &newItem, sizeof(struct MEM));
         size++;
         return 0;
@@ -63,8 +63,7 @@ int createMem(char * var, char * value){
 int readMem(char * var, char * value){
     int idx = existMem(var);
     if (idx!=-1){
-        struct MEM toRead = *(memory+idx);
-        value = toRead.value;
+        strcpy(value, (memory+idx)->value);
         return 0;
     }
     return -1;

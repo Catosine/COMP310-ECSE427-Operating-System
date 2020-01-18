@@ -85,7 +85,7 @@ int quit(){
 }
 
 int there_is_nothing_to_do_with_get(char ** tokenized_word){
-    if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "set")!=0){
+    if(strcmp(*(tokenized_word+3), "\0")!=0||strcmp(*(tokenized_word+2), "\0")==0||strcmp(*(tokenized_word+1), "\0")==0){
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     }
@@ -93,11 +93,11 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
 }
 
 int there_is_nothing_to_do_with_printf(char ** tokenized_word){
-    if(strcmp(*(tokenized_word+2), "\0")!=0||strcmp(*(tokenized_word+1), "\0")==0||strcmp(*(tokenized_word), "print")!=0){
+    if(strcmp(*(tokenized_word+2), "\0")!=0||strcmp(*(tokenized_word+1), "\0")==0){
         printf("Message: Invalid print command format. Please follow: print VAR\n");
         return -1;
     }
-    char * value;
+    char * value = (char *)malloc(200*sizeof(char));
     int status = readMem(*(tokenized_word+1), value);
     if(status==0){
         printf("%s\n", value);
