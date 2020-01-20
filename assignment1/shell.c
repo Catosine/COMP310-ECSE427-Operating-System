@@ -10,6 +10,8 @@ char * cmd;//Command line
 int clearShell(){
     free(display);
     free(cmd);
+    display = NULL;
+    cmd = NULL;
     return 0;
 }
 
