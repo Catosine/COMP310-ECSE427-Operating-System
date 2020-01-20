@@ -1,2 +1,2 @@
 // It handles user input
-int parseInput(char * cmd);
+int parseInput(char *cmd);
