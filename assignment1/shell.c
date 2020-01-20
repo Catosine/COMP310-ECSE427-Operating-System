@@ -57,6 +57,8 @@ int main(){
             case 3:
                 //Exit a script;
                 break;
+            case 4:
+                printf("RuntimeError - Access denied\n");
         }
 
     }

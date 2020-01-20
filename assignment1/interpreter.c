@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <regex.h>
+#include <unistd.h>
 #include "shellmemory.h"
 
 // Declaration of main functions
@@ -12,7 +14,9 @@ int help();
 int quit();
 int there_is_nothing_to_do_with_get(char ** tokenized_words);
 int there_is_nothing_to_do_with_printf(char ** tokenized_words);
+int run(char ** tokenized_words);
 char * strcmb(char * str1, char * str2);
+int find_last_token(char ** tokenized_word);
 
 //--------------------- Start of Code Body ---------------------//
 
@@ -26,7 +30,10 @@ int interpreter(char ** tokenized_words){
     } else if(strcmp(*tokenized_words, "print")==0){
         return there_is_nothing_to_do_with_printf(tokenized_words);
     } else if(strcmp(*tokenized_words, "run")==0){
-        return 1;
+        return run(tokenized_words);
+    } else if(strcmp(*tokenized_words, "\0")==0){
+        //Empty command
+        return 0;
     } else {
         return 1;
     }
@@ -86,8 +93,7 @@ int quit(){
 }
 
 int there_is_nothing_to_do_with_get(char ** tokenized_word){
-    int zero_idx = 0;
-    for(;strcmp(*(tokenized_word+zero_idx), "\0")!=0; zero_idx++);
+    int zero_idx = find_last_token(tokenized_word);
     if(zero_idx<1){
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
@@ -106,8 +112,7 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
 }
 
 int there_is_nothing_to_do_with_printf(char ** tokenized_word){
-    int zero_idx = 0;
-    for(;strcmp(*(tokenized_word+zero_idx), "\0")!=0; zero_idx++);
+    int zero_idx = find_last_token(tokenized_word);
     if(zero_idx<=1){
         printf("Message: Invalid print command format. Please follow: print VAR\n");
         return -1;
@@ -122,10 +127,49 @@ int there_is_nothing_to_do_with_printf(char ** tokenized_word){
     return status;
 }
 
+int run(char ** tokenized_word){
+    int zero_idx = find_last_token(tokenized_word);
+    if(zero_idx<=1){
+        printf("Message: Invalid run command format. Please follow: run SCRIPT.TXT\n");
+        return -1;
+    }
+    regex_t * reg;
+    const char * pattern = "^.*\\.(txt)?$";
+    regcomp(reg, pattern, REG_EXTENDED);
+    const size_t nmatch = 1;
+    regmatch_t pmatch[1];
+    int status = regexec(reg, *(tokenized_word+1), nmatch, pmatch, 0);
+    if(status == REG_NOMATCH){
+        printf("Message: A .txt file is required as script\n");
+        return -1;
+    } else if(status == 0){
+        int existCheck = access(*(tokenized_word+1), F_OK);
+        int readCheck = access(*(tokenized_word+1), R_OK);
+        if(existCheck==-1){
+            printf("Message: File: %s does not exist\n", *(tokenized_word+1));
+            return -1;
+        }
+        if(readCheck==-1){
+            printf("Message: No access to file: %s\n", *(tokenized_word+1));
+            return 4;
+        }
+        printf("Message: matched\n");
+        return 0;
+    }
+    regfree(reg);
+    return -1;
+}
+
 char * strcmb(char * str1, char * str2){
     char * temp = (char *)malloc((strlen(str1)+strlen(str2)+2)*sizeof(char));
     strcat(temp, str1);
     strcat(temp, " ");
     strcat(temp, str2);
     return temp;
+}
+
+int find_last_token(char ** tokenized_word){
+    int zero_idx = 0;
+    for(;strcmp(*(tokenized_word+zero_idx), "\0")!=0; zero_idx++);
+    return zero_idx;
 }
