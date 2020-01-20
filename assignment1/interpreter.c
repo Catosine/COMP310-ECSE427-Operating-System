@@ -98,7 +98,6 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     } else if(zero_idx>3){
-        // TODO: bugs here
         zero_idx--;
         for(; zero_idx>2; zero_idx--){
             char * temp = strcmb(*(tokenized_word+zero_idx-1), *(tokenized_word+zero_idx));
