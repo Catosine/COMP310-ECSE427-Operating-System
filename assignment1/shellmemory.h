@@ -6,3 +6,4 @@ int deleteMem(char * var, char * value);
 int existMem(char * var);
 int setMem(char * var, char * value);
 int clearMem();
+int get_max_mem();

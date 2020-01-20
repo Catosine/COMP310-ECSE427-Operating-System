@@ -9,6 +9,7 @@ struct MEM{
 
 int mem_len;
 struct MEM * memory = NULL;
+int max_mem = 0;
 
 //Number of element kept in the memory
 int size = 0;
@@ -76,6 +77,8 @@ int createMem(char * var, char * value){
                 memcpy((memory+(hash_value+i)%mem_len)->var, var, (strlen(var)+1)*sizeof(char));
                 memcpy((memory+(hash_value+i)%mem_len)->value, value, (strlen(value)+1)*sizeof(char));
                 size++;
+                int currlen = strlen(value);
+                max_mem = (currlen>max_mem)? currlen:max_mem;
                 return 0;
             }
         }
@@ -89,10 +92,10 @@ int readMem(char * var, char * value){
     if((memory+hash_value)->var){
         for(int i = 0; i<mem_len; i++){
             char * varToRead = (memory+(hash_value+i)%mem_len)->var;
-            printf("var: %s\n", varToRead);
+            char * valueToRead = (memory+(hash_value+i)%mem_len)->value;
             if(varToRead){
                 if(strcmp(varToRead, var)==0){
-                    char * result = strcpy(value, varToRead);
+                    char * result = strcpy(value, valueToRead);
                     return strcmp(result, value);
                 }
             }
@@ -115,11 +118,15 @@ int deleteMem(char * var, char * value){
 // Finished Implementation
 int setMem(char * var, char * value){
     if(updateMem(var, value)==0){
+        int currlen = strlen(value);
+        max_mem = (currlen>max_mem)? currlen:max_mem;
         return 0;
     } else {
         return createMem(var, value);
     }
 }
+
+int get_max_mem(){return max_mem;}
 
 int clearMem(){
     free(memory);

@@ -12,6 +12,7 @@ int help();
 int quit();
 int there_is_nothing_to_do_with_get(char ** tokenized_words);
 int there_is_nothing_to_do_with_printf(char ** tokenized_words);
+char * strcmb(char * str1, char * str2);
 
 //--------------------- Start of Code Body ---------------------//
 
@@ -92,17 +93,14 @@ int there_is_nothing_to_do_with_get(char ** tokenized_word){
         return -1;
     } else if(zero_idx>3){
         // TODO: bugs here
-        printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
-        return -1;
-        // for(; zero_idx>2; zero_idx--){
-        //     char * temp = (char *)malloc(sizeof(**(tokenized_word+zero_idx))+sizeof(**(tokenized_word+zero_idx-1))+2);
-        //     strcat(temp, *(tokenized_word+zero_idx+1));
-        //     strcat(temp, " ");
-        //     strcat(temp, *(tokenized_word+zero_idx));
-        //     int status = setMem(*(tokenized_word+1), temp);
-        //     free(temp);
-        //     return status;
-        // } 
+        zero_idx--;
+        for(; zero_idx>2; zero_idx--){
+            char * temp = strcmb(*(tokenized_word+zero_idx-1), *(tokenized_word+zero_idx));
+            memset(*(tokenized_word+zero_idx-1), 0, sizeof(*(tokenized_word+zero_idx-1)));
+            strcpy(*(tokenized_word+zero_idx-1), temp);
+            free(temp);
+            temp = NULL;
+        }
     }
     return setMem(*(tokenized_word+1), *(tokenized_word+2));
 }
@@ -114,7 +112,7 @@ int there_is_nothing_to_do_with_printf(char ** tokenized_word){
         printf("Message: Invalid print command format. Please follow: print VAR\n");
         return -1;
     }
-    char * value = (char *)malloc(200*sizeof(char));
+    char * value = (char *)malloc((get_max_mem()+1)*sizeof(char));
     int status = readMem(*(tokenized_word+1), value);
     if(status==0){
         printf("%s\n", value);
@@ -122,4 +120,12 @@ int there_is_nothing_to_do_with_printf(char ** tokenized_word){
         printf("Message: Variable does not exists\n");
     }
     return status;
+}
+
+char * strcmb(char * str1, char * str2){
+    char * temp = (char *)malloc((strlen(str1)+strlen(str2)+2)*sizeof(char));
+    strcat(temp, str1);
+    strcat(temp, " ");
+    strcat(temp, str2);
+    return temp;
 }
