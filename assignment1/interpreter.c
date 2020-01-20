@@ -24,31 +24,37 @@ int interpreter(char **tokenized_words)
 {
     if (strcmp(*tokenized_words, "help") == 0)
     {
+        // help
         return help();
     }
     else if (strcmp(*tokenized_words, "quit") == 0)
     {
+        // quit
         return quit();
     }
     else if (strcmp(*tokenized_words, "set") == 0)
     {
+        // set VAR STRING
         return there_is_nothing_to_do_with_get(tokenized_words);
     }
     else if (strcmp(*tokenized_words, "print") == 0)
     {
+        // print VAR
         return there_is_nothing_to_do_with_printf(tokenized_words);
     }
     else if (strcmp(*tokenized_words, "run") == 0)
     {
+        // run SCRIPT.TXT
         return run(tokenized_words);
     }
     else if (strcmp(*tokenized_words, "\0") == 0)
     {
-        //Empty command
+        // empty command
         return 0;
     }
     else
     {
+        // all other undefined command
         return 1;
     }
 }
@@ -63,8 +69,8 @@ int parseInput(char *cmd)
     int offset = 0;
 
     // Skip all white spaces in the front of cmd
-    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++)
-        ;
+    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++);
+
     // Tokenized the cmd
     int times = 0;
     while (*(cmd + start) != '\0' && *(cmd + start) != '\n')
@@ -72,7 +78,6 @@ int parseInput(char *cmd)
 
         for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && *(cmd + start) != ' ' && start < 1000; start++, idx++)
         {
-
             *(tmp + idx) = *(cmd + start);
         }
 
@@ -116,12 +121,15 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
     int zero_idx = find_last_token(tokenized_word);
     if (zero_idx < 1)
     {
+        // invalid input: STRING missing
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     }
     else if (zero_idx > 3)
     {
+        // if multiple tokens (a sentence, i.e. set a hello world)
         zero_idx--;
+        // combine tokens into one string (i.e. 'hello' 'world' -> 'hello world')
         for (; zero_idx > 2; zero_idx--)
         {
             char *temp = strcmb(*(tokenized_word + zero_idx - 1), *(tokenized_word + zero_idx));
@@ -139,6 +147,7 @@ int there_is_nothing_to_do_with_printf(char **tokenized_word)
     int zero_idx = find_last_token(tokenized_word);
     if (zero_idx <= 1)
     {
+        // invalid input: VAR missing
         printf("Message: Invalid print command format. Please follow: print VAR\n");
         return -1;
     }
@@ -146,10 +155,12 @@ int there_is_nothing_to_do_with_printf(char **tokenized_word)
     int status = readMem(*(tokenized_word + 1), value);
     if (status == 0)
     {
+        // find VAR in the memory
         printf("%s\n", value);
     }
     else
     {
+        // cannot find VAR in the memory
         printf("Message: Variable does not exists\n");
     }
     return status;
@@ -160,34 +171,43 @@ int run(char **tokenized_word)
     int zero_idx = find_last_token(tokenized_word);
     if (zero_idx <= 1)
     {
+        // invalid input: SCRIPT.TXT missing
         printf("Message: Invalid run command format. Please follow: run SCRIPT.TXT\n");
         return -1;
     }
+
+    // setup regular expression for .txt file
     regex_t *reg;
     const char *pattern = "^.*\\.(txt)?$";
     regcomp(reg, pattern, REG_EXTENDED);
     const size_t nmatch = 1;
     regmatch_t pmatch[1];
     int status = regexec(reg, *(tokenized_word + 1), nmatch, pmatch, 0);
+
     if (status == REG_NOMATCH)
     {
+        // Input does not contain *.txt
         printf("Message: A .txt file is required as script\n");
         return -1;
     }
     else if (status == 0)
     {
-        int existCheck = access(*(tokenized_word + 1), F_OK);
-        int readCheck = access(*(tokenized_word + 1), R_OK);
+        // script is confirmed as .txt file
+        int existCheck = access(*(tokenized_word + 1), F_OK); //existance check
+        int readCheck = access(*(tokenized_word + 1), R_OK);  //readability check
         if (existCheck == -1)
         {
+            // cannot find the file
             printf("Message: File: %s does not exist\n", *(tokenized_word + 1));
             return -1;
         }
         if (readCheck == -1)
         {
+            // no reading access to the file
             printf("Message: No access to file: %s\n", *(tokenized_word + 1));
             return 4;
         }
+        // read the script and processing
         printf("Message: matched\n");
         return 0;
     }
@@ -197,6 +217,7 @@ int run(char **tokenized_word)
 
 char *strcmb(char *str1, char *str2)
 {
+    // concat two string which are closed in memory
     char *temp = (char *)malloc((strlen(str1) + strlen(str2) + 2) * sizeof(char));
     strcat(temp, str1);
     strcat(temp, " ");

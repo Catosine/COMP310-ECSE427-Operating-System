@@ -18,8 +18,8 @@ int clearShell()
 
 int main()
 {
-    display = (char *)malloc(1000 * sizeof(char));
-
+    // assign memory space for display and command
+    display = (char *)malloc(100 * sizeof(char));
     cmd = (char *)malloc(1000 * sizeof(char));
 
     int memory_size = 100;
