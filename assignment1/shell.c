@@ -44,6 +44,7 @@ int main(){
             case -1:
                 //Error
                 printf("RuntimeError - Unable to run: %s", cmd);
+                break;
             case 0:
                 //OK
                 break;
@@ -59,6 +60,7 @@ int main(){
                 break;
             case 4:
                 printf("RuntimeError - Access denied\n");
+                break;
         }
 
     }
