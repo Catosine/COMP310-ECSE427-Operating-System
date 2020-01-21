@@ -45,7 +45,7 @@ int decoder(int status, char *cmd){
 }
 
 int interpreter(char **tokenized_words)
-{
+{   
     if (strcmp(*tokenized_words, "help") == 0)
     {
         // help
