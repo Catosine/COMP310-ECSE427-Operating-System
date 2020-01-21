@@ -146,7 +146,7 @@ int quit()
 int there_is_nothing_to_do_with_get(char **tokenized_word)
 {
     int zero_idx = find_last_token(tokenized_word);
-    if (zero_idx < 2)
+    if (zero_idx < 3)
     {
         // invalid input: STRING missing
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
@@ -270,7 +270,6 @@ int run(char **tokenized_word)
         }
         else
         {
-
             printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
 
             free(tokenized_word);
