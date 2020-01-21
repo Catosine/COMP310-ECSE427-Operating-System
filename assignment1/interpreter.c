@@ -16,7 +16,6 @@ int quit();
 int there_is_nothing_to_do_with_get(char **tokenized_words);
 int there_is_nothing_to_do_with_printf(char **tokenized_words);
 int run(char **tokenized_words);
-char *strcmb(char *str1, char *str2);
 int find_last_token(char **tokenized_word);
 
 //--------------------- Start of Code Body ---------------------//
@@ -164,24 +163,12 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     }
-    // else if (zero_idx > 3)
-    // {
-    //     // if multiple tokens (a sentence, i.e. set a hello world)
-    //     zero_idx--;
-    //     // combine tokens into one string (i.e. 'hello' 'world' -> 'hello world')
-    //     for (; zero_idx > 2; zero_idx--)
-    //     {
-    //         char *temp = strcmb(*(tokenized_word + zero_idx - 1), *(tokenized_word + zero_idx));
-    //         memset(*(tokenized_word + zero_idx - 1), 0, sizeof(*(tokenized_word + zero_idx - 1)));
-    //         strcpy(*(tokenized_word + zero_idx - 1), temp);
-    //         free(temp);
-    //         temp = NULL;
-    //     }
-    // }
+
     int status = setMem(*(tokenized_word + 1), *(tokenized_word + 2));
     free(tokenized_word);
     tokenized_word = NULL;
     return status;
+
 }
 
 int there_is_nothing_to_do_with_printf(char **tokenized_word)
@@ -295,16 +282,6 @@ int run(char **tokenized_word)
     tokenized_word = NULL;
 
     return -1;
-}
-
-char *strcmb(char *str1, char *str2)
-{
-    // concat two string which are closed in memory
-    char *temp = (char *)malloc((strlen(str1) + strlen(str2) + 2) * sizeof(char));
-    strcat(temp, str1);
-    strcat(temp, " ");
-    strcat(temp, str2);
-    return temp;
 }
 
 int find_last_token(char **tokenized_word)
