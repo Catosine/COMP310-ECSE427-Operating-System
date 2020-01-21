@@ -1,13 +1,522 @@
 help
-set x 10
-set y 20
-set z mary
-set bobbie Montreal Canadians
-set z bob
-set y 30
-print x
-print y
-print z
-print bobbie
-run testfile.txt
+set 0 hello0
+
+print 0
+set 1 hello1
+
+print 1
+set 2 hello2
+
+print 2
+set 3 hello3
+
+print 3
+set 4 hello4
+
+print 4
+set 5 hello5
+
+print 5
+set 6 hello6
+
+print 6
+set 7 hello7
+
+print 7
+set 8 hello8
+
+print 8
+set 9 hello9
+
+print 9
+set 10 hello10
+
+print 10
+set 11 hello11
+
+print 11
+set 12 hello12
+
+print 12
+set 13 hello13
+
+print 13
+set 14 hello14
+
+print 14
+set 15 hello15
+
+print 15
+set 16 hello16
+
+print 16
+set 17 hello17
+
+print 17
+set 18 hello18
+
+print 18
+set 19 hello19
+
+print 19
+set 20 hello20
+
+print 20
+set 21 hello21
+
+print 21
+set 22 hello22
+
+print 22
+set 23 hello23
+
+print 23
+set 24 hello24
+
+print 24
+set 25 hello25
+
+print 25
+set 26 hello26
+
+print 26
+set 27 hello27
+
+print 27
+set 28 hello28
+
+print 28
+set 29 hello29
+
+print 29
+set 30 hello30
+
+print 30
+set 31 hello31
+
+print 31
+set 32 hello32
+
+print 32
+set 33 hello33
+
+print 33
+set 34 hello34
+
+print 34
+set 35 hello35
+
+print 35
+set 36 hello36
+
+print 36
+set 37 hello37
+
+print 37
+set 38 hello38
+
+print 38
+set 39 hello39
+
+print 39
+set 40 hello40
+
+print 40
+set 41 hello41
+
+print 41
+set 42 hello42
+
+print 42
+set 43 hello43
+
+print 43
+set 44 hello44
+
+print 44
+set 45 hello45
+
+print 45
+set 46 hello46
+
+print 46
+set 47 hello47
+
+print 47
+set 48 hello48
+
+print 48
+set 49 hello49
+
+print 49
+set 50 hello50
+
+print 50
+set 51 hello51
+
+print 51
+set 52 hello52
+
+print 52
+set 53 hello53
+
+print 53
+set 54 hello54
+
+print 54
+set 55 hello55
+
+print 55
+set 56 hello56
+
+print 56
+set 57 hello57
+
+print 57
+set 58 hello58
+
+print 58
+set 59 hello59
+
+print 59
+set 60 hello60
+
+print 60
+set 61 hello61
+
+print 61
+set 62 hello62
+
+print 62
+set 63 hello63
+
+print 63
+set 64 hello64
+
+print 64
+set 65 hello65
+
+print 65
+set 66 hello66
+
+print 66
+set 67 hello67
+
+print 67
+set 68 hello68
+
+print 68
+set 69 hello69
+
+print 69
+set 70 hello70
+
+print 70
+set 71 hello71
+
+print 71
+set 72 hello72
+
+print 72
+set 73 hello73
+
+print 73
+set 74 hello74
+
+print 74
+set 75 hello75
+
+print 75
+set 76 hello76
+
+print 76
+set 77 hello77
+
+print 77
+set 78 hello78
+
+print 78
+set 79 hello79
+
+print 79
+set 80 hello80
+
+print 80
+set 81 hello81
+
+print 81
+set 82 hello82
+
+print 82
+set 83 hello83
+
+print 83
+set 84 hello84
+
+print 84
+set 85 hello85
+
+print 85
+set 86 hello86
+
+print 86
+set 87 hello87
+
+print 87
+set 88 hello88
+
+print 88
+set 89 hello89
+
+print 89
+set 90 hello90
+
+print 90
+set 91 hello91
+
+print 91
+set 92 hello92
+
+print 92
+set 93 hello93
+
+print 93
+set 94 hello94
+
+print 94
+set 95 hello95
+
+print 95
+set 96 hello96
+
+print 96
+set 97 hello97
+
+print 97
+set 98 hello98
+
+print 98
+set 99 hello99
+
+print 99
+set ecse427 comp310
+print ecse427
+set 0 world0
+print 0
+set 1 world1
+print 1
+set 2 world2
+print 2
+set 3 world3
+print 3
+set 4 world4
+print 4
+set 5 world5
+print 5
+set 6 world6
+print 6
+set 7 world7
+print 7
+set 8 world8
+print 8
+set 9 world9
+print 9
+set 10 world10
+print 10
+set 11 world11
+print 11
+set 12 world12
+print 12
+set 13 world13
+print 13
+set 14 world14
+print 14
+set 15 world15
+print 15
+set 16 world16
+print 16
+set 17 world17
+print 17
+set 18 world18
+print 18
+set 19 world19
+print 19
+set 20 world20
+print 20
+set 21 world21
+print 21
+set 22 world22
+print 22
+set 23 world23
+print 23
+set 24 world24
+print 24
+set 25 world25
+print 25
+set 26 world26
+print 26
+set 27 world27
+print 27
+set 28 world28
+print 28
+set 29 world29
+print 29
+set 30 world30
+print 30
+set 31 world31
+print 31
+set 32 world32
+print 32
+set 33 world33
+print 33
+set 34 world34
+print 34
+set 35 world35
+print 35
+set 36 world36
+print 36
+set 37 world37
+print 37
+set 38 world38
+print 38
+set 39 world39
+print 39
+set 40 world40
+print 40
+set 41 world41
+print 41
+set 42 world42
+print 42
+set 43 world43
+print 43
+set 44 world44
+print 44
+set 45 world45
+print 45
+set 46 world46
+print 46
+set 47 world47
+print 47
+set 48 world48
+print 48
+set 49 world49
+print 49
+set 50 world50
+print 50
+set 51 world51
+print 51
+set 52 world52
+print 52
+set 53 world53
+print 53
+set 54 world54
+print 54
+set 55 world55
+print 55
+set 56 world56
+print 56
+set 57 world57
+print 57
+set 58 world58
+print 58
+set 59 world59
+print 59
+set 60 world60
+print 60
+set 61 world61
+print 61
+set 62 world62
+print 62
+set 63 world63
+print 63
+set 64 world64
+print 64
+set 65 world65
+print 65
+set 66 world66
+print 66
+set 67 world67
+print 67
+set 68 world68
+print 68
+set 69 world69
+print 69
+set 70 world70
+print 70
+set 71 world71
+print 71
+set 72 world72
+print 72
+set 73 world73
+print 73
+set 74 world74
+print 74
+set 75 world75
+print 75
+set 76 world76
+print 76
+set 77 world77
+print 77
+set 78 world78
+print 78
+set 79 world79
+print 79
+set 80 world80
+print 80
+set 81 world81
+print 81
+set 82 world82
+print 82
+set 83 world83
+print 83
+set 84 world84
+print 84
+set 85 world85
+print 85
+set 86 world86
+print 86
+set 87 world87
+print 87
+set 88 world88
+print 88
+set 89 world89
+print 89
+set 90 world90
+print 90
+set 91 world91
+print 91
+set 92 world92
+print 92
+set 93 world93
+print 93
+set 94 world94
+print 94
+set 95 world95
+print 95
+set 96 world96
+print 96
+set 97 world97
+print 97
+set 98 world98
+print 98
+set 99 world99
+print 99
+set 1
+print 1
+set 1                 
+print 1
+set 1 hello world
+print 1
+             set             1    hahahah          
+print 1
+print
+print mcgill
+print                 
+                 print                1       
+run
+run           
+run lalalalalala.abcd
+run a_very_nice_file.txt
+run a_very_bad_file.txt
+super_artificial_intelligence
 quit

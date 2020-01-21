@@ -168,6 +168,7 @@ int deleteMem(char *var, char *value)
         toDelete->value = NULL;
 
         size--;
+        
     }
 
     return 0;

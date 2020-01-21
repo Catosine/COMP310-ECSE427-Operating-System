@@ -165,6 +165,11 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
     }
 
     int status = setMem(*(tokenized_word + 1), *(tokenized_word + 2));
+    
+    if(status){
+        printf("Message: %s\n", *(tokenized_word + 2));
+    }
+
     free(tokenized_word);
     tokenized_word = NULL;
     return status;
