@@ -79,7 +79,7 @@ echo "help" >> a_very_nice_file.txt
 echo "run a_very_nice_file.txt" >> testfile.txt
 
 # naughty run: run with lots of blanks
-echo "                 run                   a_very_nice_file.txt             "
+echo "                 run                   a_very_nice_file.txt             " >> testfile.txt
 
 # illegal run: script does not exist
 echo "run a_very_bad_file.txt" >> testfile.txt

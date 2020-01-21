@@ -517,6 +517,7 @@ run
 run           
 run lalalalalala.abcd
 run a_very_nice_file.txt
+                 run                   a_very_nice_file.txt             
 run a_very_bad_file.txt
 super_artificial_intelligence
 quit
