@@ -45,7 +45,7 @@ int decoder(int status, char *cmd){
 }
 
 int interpreter(char **tokenized_words)
-{   
+{
     if (strcmp(*tokenized_words, "help") == 0)
     {
         // help
@@ -101,9 +101,20 @@ int parseInput(char *cmd)
     while (*(cmd + start) != '\0' && *(cmd + start) != '\n')
     {
 
-        for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && *(cmd + start) != ' ' && start < 1000; start++, idx++)
-        {
+        for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && start < 1000; start++, idx++)
+        {   
+
+            if(*(cmd + start) == '\\' && *(cmd + start + 1) == ' ')
+            {
+                start++;
+            }
+            if(*(cmd + start) == ' ' && *(cmd + start - 1) != '\\')
+            {
+                break;
+            }
+
             *(tmp + idx) = *(cmd + start);
+
         }
 
         *(tmp + idx) = '\0';
@@ -115,6 +126,7 @@ int parseInput(char *cmd)
         }
 
         start++;
+
     }
 
     // Suggest the end of the tokens
