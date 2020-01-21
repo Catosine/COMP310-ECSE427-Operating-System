@@ -120,13 +120,13 @@ int createMem(char *var, char *value)
 
                 // update max_mem
                 max_mem = (currlen > max_mem) ? currlen : max_mem;
-                printf("size: %d\n", size);
                 return 0;
             }
         }
     }
-    printf("size: %d\n", size);
+
     return -1;
+    
 }
 
 // Finished Implementation
@@ -180,7 +180,6 @@ int setMem(char *var, char *value)
         // var exists in memory, then update directly
         int currlen = strlen(value);
         max_mem = (currlen > max_mem) ? currlen : max_mem;
-        printf("size: %d\n", size);
         return 0;
     }
     else

@@ -6,6 +6,7 @@
 #include "shellmemory.h"
 
 // Declaration of main functions
+int decoder(int status, char *cmd);
 int parseInput(char *cmd);
 int interpreter(char **tokenized_words);
 
@@ -19,6 +20,29 @@ char *strcmb(char *str1, char *str2);
 int find_last_token(char **tokenized_word);
 
 //--------------------- Start of Code Body ---------------------//
+
+int decoder(int status, char *cmd){
+    switch (status)
+    {
+    case -1:
+        // Error
+        printf("RuntimeError - Unable to run: %s", cmd);
+        return 0;
+    case 0:
+        // Exit to shell
+        return 0;
+    case 1:
+        // Unsupported command
+        printf("RuntimeError - Unsupported command: %s", cmd);
+        return 0;
+    case 2:
+        // bye bye this world
+        return 1;
+    case 3:
+        printf("RuntimeError - Access denied\n");
+        return 0;
+    }
+}
 
 int interpreter(char **tokenized_words)
 {
@@ -69,7 +93,8 @@ int parseInput(char *cmd)
     int offset = 0;
 
     // Skip all white spaces in the front of cmd
-    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++);
+    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++)
+        ;
 
     // Tokenized the cmd
     int times = 0;
@@ -127,20 +152,20 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
         return -1;
     }
-    else if (zero_idx > 3)
-    {
-        // if multiple tokens (a sentence, i.e. set a hello world)
-        zero_idx--;
-        // combine tokens into one string (i.e. 'hello' 'world' -> 'hello world')
-        for (; zero_idx > 2; zero_idx--)
-        {
-            char *temp = strcmb(*(tokenized_word + zero_idx - 1), *(tokenized_word + zero_idx));
-            memset(*(tokenized_word + zero_idx - 1), 0, sizeof(*(tokenized_word + zero_idx - 1)));
-            strcpy(*(tokenized_word + zero_idx - 1), temp);
-            free(temp);
-            temp = NULL;
-        }
-    }
+    // else if (zero_idx > 3)
+    // {
+    //     // if multiple tokens (a sentence, i.e. set a hello world)
+    //     zero_idx--;
+    //     // combine tokens into one string (i.e. 'hello' 'world' -> 'hello world')
+    //     for (; zero_idx > 2; zero_idx--)
+    //     {
+    //         char *temp = strcmb(*(tokenized_word + zero_idx - 1), *(tokenized_word + zero_idx));
+    //         memset(*(tokenized_word + zero_idx - 1), 0, sizeof(*(tokenized_word + zero_idx - 1)));
+    //         strcpy(*(tokenized_word + zero_idx - 1), temp);
+    //         free(temp);
+    //         temp = NULL;
+    //     }
+    // }
     int status = setMem(*(tokenized_word + 1), *(tokenized_word + 2));
     free(tokenized_word);
     tokenized_word = NULL;
@@ -221,18 +246,15 @@ int run(char **tokenized_word)
         }
 
         // read the script and processing
-        FILE * fp = fopen(*(tokenized_word+1), "r");
+        FILE *fp = fopen(*(tokenized_word + 1), "r");
 
-        if(fp)
+        if (fp)
         {
-            char * cmd = (char *)malloc(1000*sizeof(char));
+            char *cmd = (char *)malloc(1000 * sizeof(char));
 
-            while(fgets(cmd, 999, fp))
+            while (fgets(cmd, 999, fp))
             {
-                printf("%s", cmd);
-                int status = parseInput(cmd);
-                if(status == 2)
-                {
+                if(decoder(parseInput(cmd), cmd)){
                     return 0;
                 }
                 strcpy(cmd, "");
@@ -245,25 +267,23 @@ int run(char **tokenized_word)
             cmd = NULL;
 
             return 0;
-            
-        } else{
+        }
+        else
+        {
 
-            printf("Message: CANNOT open the file: %s\n", *(tokenized_word+1));
+            printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
 
             free(tokenized_word);
             tokenized_word = NULL;
 
             return -1;
-
         }
-
     }
-    
+
     free(tokenized_word);
     tokenized_word = NULL;
 
     return -1;
-
 }
 
 char *strcmb(char *str1, char *str2)

@@ -42,30 +42,12 @@ int main()
 
         fgets(cmd, 999, stdin);
 
-        int errorCode = parseInput(cmd);
-        switch (errorCode)
-        {
-        case -1:
-            // Error
-            printf("RuntimeError - Unable to run: %s", cmd);
-            break;
-        case 0:
-            // Exit to shell
-            break;
-        case 1:
-            // Unsupported command
-            printf("RuntimeError - Unsupported command: %s", cmd);
-            break;
-        case 2:
-            // bye bye this world
-            goto sayounara;
-        case 3:
-            printf("RuntimeError - Access denied\n");
+        if(decoder(parseInput(cmd), cmd)){
             break;
         }
+
     }
 
-sayounara:
     clearShell();
     clearMem();
 
