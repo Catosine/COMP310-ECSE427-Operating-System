@@ -120,10 +120,12 @@ int createMem(char *var, char *value)
 
                 // update max_mem
                 max_mem = (currlen > max_mem) ? currlen : max_mem;
+                printf("size: %d\n", size);
                 return 0;
             }
         }
     }
+    printf("size: %d\n", size);
     return -1;
 }
 
@@ -145,7 +147,6 @@ int readMem(char *var, char *value)
             }
         }
 
-        return 0;
     }
 
     return -1;
@@ -179,6 +180,7 @@ int setMem(char *var, char *value)
         // var exists in memory, then update directly
         int currlen = strlen(value);
         max_mem = (currlen > max_mem) ? currlen : max_mem;
+        printf("size: %d\n", size);
         return 0;
     }
     else
@@ -192,6 +194,14 @@ int getMaxMem() { return max_mem; }
 
 int clearMem()
 {
+    for (int i = 0; i < size; i++)
+    {   
+        struct MEM * toClear = memory+i;
+        free(toClear->var);
+        free(toClear->value);
+        (memory + i)->var = NULL;
+        (memory + i)->value = NULL;
+    }
     free(memory);
     memory = NULL;
     return 0;

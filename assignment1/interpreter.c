@@ -95,6 +95,9 @@ int parseInput(char *cmd)
     // Suggest the end of the tokens
     *(words + offset) = strdup("\0");
 
+    free(tmp);
+    tmp = NULL;
+
     return interpreter(words);
 }
 
@@ -112,14 +115,13 @@ int help()
 int quit()
 {
     printf("Bye!\n");
-    clearMem();
     return 2;
 }
 
 int there_is_nothing_to_do_with_get(char **tokenized_word)
 {
     int zero_idx = find_last_token(tokenized_word);
-    if (zero_idx < 1)
+    if (zero_idx < 2)
     {
         // invalid input: STRING missing
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
@@ -139,7 +141,10 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
             temp = NULL;
         }
     }
-    return setMem(*(tokenized_word + 1), *(tokenized_word + 2));
+    int status = setMem(*(tokenized_word + 1), *(tokenized_word + 2));
+    free(tokenized_word);
+    tokenized_word = NULL;
+    return status;
 }
 
 int there_is_nothing_to_do_with_printf(char **tokenized_word)
@@ -163,6 +168,12 @@ int there_is_nothing_to_do_with_printf(char **tokenized_word)
         // cannot find VAR in the memory
         printf("Message: Variable does not exists\n");
     }
+
+    free(value);
+    free(tokenized_word);
+    value = NULL;
+    tokenized_word = NULL;
+
     return status;
 }
 
@@ -177,12 +188,13 @@ int run(char **tokenized_word)
     }
 
     // setup regular expression for .txt file
-    regex_t *reg;
+    regex_t reg;
     const char *pattern = "^.*\\.(txt)?$";
-    regcomp(reg, pattern, REG_EXTENDED);
+    regcomp(&reg, pattern, REG_EXTENDED);
     const size_t nmatch = 1;
     regmatch_t pmatch[1];
-    int status = regexec(reg, *(tokenized_word + 1), nmatch, pmatch, 0);
+    int status = regexec(&reg, *(tokenized_word + 1), nmatch, pmatch, 0);
+    regfree(&reg);
 
     if (status == REG_NOMATCH)
     {
@@ -205,14 +217,53 @@ int run(char **tokenized_word)
         {
             // no reading access to the file
             printf("Message: No access to file: %s\n", *(tokenized_word + 1));
-            return 4;
+            return 3;
         }
+
         // read the script and processing
-        printf("Message: matched\n");
-        return 0;
+        FILE * fp = fopen(*(tokenized_word+1), "r");
+
+        if(fp)
+        {
+            char * cmd = (char *)malloc(1000*sizeof(char));
+
+            while(fgets(cmd, 999, fp))
+            {
+                printf("%s", cmd);
+                int status = parseInput(cmd);
+                if(status == 2)
+                {
+                    return 0;
+                }
+                strcpy(cmd, "");
+            }
+
+            fclose(fp);
+            free(cmd);
+            free(tokenized_word);
+            tokenized_word = NULL;
+            cmd = NULL;
+
+            return 0;
+            
+        } else{
+
+            printf("Message: CANNOT open the file: %s\n", *(tokenized_word+1));
+
+            free(tokenized_word);
+            tokenized_word = NULL;
+
+            return -1;
+
+        }
+
     }
-    regfree(reg);
+    
+    free(tokenized_word);
+    tokenized_word = NULL;
+
     return -1;
+
 }
 
 char *strcmb(char *str1, char *str2)
@@ -228,7 +279,6 @@ char *strcmb(char *str1, char *str2)
 int find_last_token(char **tokenized_word)
 {
     int zero_idx = 0;
-    for (; strcmp(*(tokenized_word + zero_idx), "\0") != 0; zero_idx++)
-        ;
+    for (; strcmp(*(tokenized_word + zero_idx), "\0") != 0; zero_idx++);
     return zero_idx;
 }

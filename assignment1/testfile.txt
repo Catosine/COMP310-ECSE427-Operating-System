@@ -1,1 +1,12 @@
 help
+set x 10
+set y 20
+set z mary
+set bobbie Montreal Canadians
+set z bob
+set y 30
+print x
+print y
+print z
+print bobbie
+quit

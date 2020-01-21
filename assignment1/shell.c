@@ -46,23 +46,20 @@ int main()
         switch (errorCode)
         {
         case -1:
-            //Error
+            // Error
             printf("RuntimeError - Unable to run: %s", cmd);
             break;
         case 0:
-            //OK
+            // Exit to shell
             break;
         case 1:
-            //Unsupported command
+            // Unsupported command
             printf("RuntimeError - Unsupported command: %s", cmd);
             break;
         case 2:
-            //Exit
+            // bye bye this world
             goto sayounara;
         case 3:
-            //Exit a script;
-            break;
-        case 4:
             printf("RuntimeError - Access denied\n");
             break;
         }
@@ -70,6 +67,8 @@ int main()
 
 sayounara:
     clearShell();
+    clearMem();
 
     return 0;
+
 }
