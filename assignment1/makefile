@@ -13,5 +13,8 @@ $(prom): $(obj)
 %.o: %.c
 	gcc -c $<
 
+pack: $(prom)
+	zip ecse427_comp310_assignment1_pengnan_260768510.zip shell.c shellmemory.c shellmemory.h interpreter.c interpreter.h README.txt makefile testfile.txt
+
 clean:
 	rm -f $(obj) $(prom)

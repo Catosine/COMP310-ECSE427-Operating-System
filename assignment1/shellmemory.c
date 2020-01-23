@@ -132,24 +132,19 @@ int createMem(char *var, char *value)
 // Finished Implementation
 int readMem(char *var, char *value)
 {
-    int hash_value = hash(var);
-    for (int i = 0; i < mem_len; i++)
+    // find the index to the expected var
+    int idx = existMem(var);
+
+    if(idx>=0)
     {
-        struct MEM *toCheck = memory + (hash_value + i) % mem_len;
-        if (toCheck->var)
-        {
-            // if slot toCheck has var
-            if (strcmp(toCheck->var, var) == 0)
-            {
-                // read value from toCheck out
-                char *result = strcpy(value, toCheck->value);
-                return strcmp(result, value);
-            }
-        }
+        // read the value if it is founded
+        char *result = strcpy(value, (memory+idx)->value);
+        return strcmp(result, value);
 
     }
 
     return -1;
+
 }
 
 int deleteMem(char *var, char *value)

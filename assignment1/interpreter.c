@@ -20,7 +20,8 @@ int find_last_token(char **tokenized_word);
 
 //--------------------- Start of Code Body ---------------------//
 
-int decoder(int status, char *cmd){
+int decoder(int status, char *cmd)
+{
     switch (status)
     {
     case -1:
@@ -101,19 +102,18 @@ int parseInput(char *cmd)
     {
 
         for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && start < 1000; start++, idx++)
-        {   
+        {
 
-            if(*(cmd + start) == '\\' && *(cmd + start + 1) == ' ')
+            if (*(cmd + start) == '\\' && *(cmd + start + 1) == ' ')
             {
                 start++;
             }
-            if(*(cmd + start) == ' ' && *(cmd + start - 1) != '\\')
+            if (*(cmd + start) == ' ' && *(cmd + start - 1) != '\\')
             {
                 break;
             }
 
             *(tmp + idx) = *(cmd + start);
-
         }
 
         *(tmp + idx) = '\0';
@@ -125,7 +125,6 @@ int parseInput(char *cmd)
         }
 
         start++;
-
     }
 
     // Suggest the end of the tokens
@@ -165,15 +164,15 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
     }
 
     int status = setMem(*(tokenized_word + 1), *(tokenized_word + 2));
-    
-    if(status){
+
+    if (status)
+    {
         printf("Message: %s\n", *(tokenized_word + 2));
     }
 
     free(tokenized_word);
     tokenized_word = NULL;
     return status;
-
 }
 
 int there_is_nothing_to_do_with_printf(char **tokenized_word)
@@ -258,7 +257,8 @@ int run(char **tokenized_word)
 
             while (fgets(cmd, 999, fp))
             {
-                if(decoder(parseInput(cmd), cmd)){
+                if (decoder(parseInput(cmd), cmd))
+                {
                     return 0;
                 }
                 strcpy(cmd, "");
@@ -292,6 +292,7 @@ int run(char **tokenized_word)
 int find_last_token(char **tokenized_word)
 {
     int zero_idx = 0;
-    for (; strcmp(*(tokenized_word + zero_idx), "\0") != 0; zero_idx++);
+    for (; strcmp(*(tokenized_word + zero_idx), "\0") != 0; zero_idx++)
+        ;
     return zero_idx;
 }
