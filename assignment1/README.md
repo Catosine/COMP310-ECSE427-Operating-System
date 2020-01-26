@@ -32,9 +32,16 @@ Here are available commands listed below:
 
 ## Examples
 ```bash
-# Store single-word value
-set singleword hello
-
-# Store multi-word value
-set multiword hello\ world
+./mysh # Start the shell
+Welcome to the Pengnan Fan Shell
+Version 1.0 Created January 2o2o
+& set singleword hello # Store single-word value
+& print singleword
+hello
+& set multiword hello\ world # Use backslash to escape blank
+& print multiword
+hello world
+& set multiword hello world
+& print multiword
+hello
 ```
