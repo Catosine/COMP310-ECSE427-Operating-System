@@ -29,3 +29,12 @@ Here are available commands listed below:
 > `set VAR STRING` - Set variable VAR with string STRING. Now supporting sentence as value (i.e. hello world).  
 > `print VAR` - Print the value of variable VAR.  
 > `run SCRIPT.txt` - Run the script SCRIPT.  
+
+## Examples
+```bash
+# Store single-word value
+set singleword hello
+
+# Store multi-word value
+set multiword hello\ world
+```
