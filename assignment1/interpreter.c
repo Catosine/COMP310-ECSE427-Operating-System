@@ -204,7 +204,8 @@ int run(char **tokenized_word)
 
             while (fgets(cmd, 999, fp))
             {
-                if (decoder(parse(cmd), cmd))
+                int status = parse(cmd);
+                if (decoder(status, cmd) || status)
                 {
                     return 0;
                 }
