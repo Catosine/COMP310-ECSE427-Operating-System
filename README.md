@@ -7,5 +7,8 @@ All codes are developed on a server of McGill: `mimi.cs.mcgill.ca`.
 ## Content  
 > [**Assignment 1: Building an OS Shell**](https://github.com/Catosine/COMP310-ECSE427-Operating-System/tree/master/assignment1)
 
+## Note  
+All codes will be released after each due dates.  
+
 ## License  
 This repo is under the MIT license.
