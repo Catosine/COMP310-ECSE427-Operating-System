@@ -1,4 +1,4 @@
-# **COMP 310 & ECSE 427 Assignment 1: Building an OS Shell**  
+# **COMP 310 & ECSE 427 Course Project: Shell**  
 
 ## Development Environment  
 All codes are developed on `mimi.cs.mcgill.ca`.  
