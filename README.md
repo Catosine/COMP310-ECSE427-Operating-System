@@ -4,8 +4,8 @@ This is the repo for course project of [COMP310 & ECSE427: Operating System](htt
 ## Development Environment  
 All codes are developed on a server of McGill: `mimi.cs.mcgill.ca`.  
 
-## [Assignments](https://github.com/Catosine/COMP310-ECSE427-Operating-System/raw/master/assignments)  
-Here is the folder for final submission of assignments. For each assignment, it will be released after the due dates with penalty.  
+## Assignments  
+[Here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/raw/master/assignments) is the folder for final submission of assignments. For each assignment, it will be released after the due dates with penalty.  
 > **Assignment 1: Building an OS Shell**  
 > This is the final submission for assignment 1.  
 > Codes can be viewed [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/tree/ec92eec14dff39225b75a7029a75d193a803eb02/shell).  
