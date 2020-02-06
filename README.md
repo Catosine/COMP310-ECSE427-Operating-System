@@ -7,7 +7,7 @@ All codes are developed on a server of McGill: `mimi.cs.mcgill.ca`.
 ## Content  
 > [**Assignment 1: Building an OS Shell**](https://github.com/Catosine/COMP310-ECSE427-Operating-System/tree/ec92eec14dff39225b75a7029a75d193a803eb02/shell)  
 > This is the final submission for assignment 1.  
-> A zip can be found [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/tree/master/assignments).  
+> A zip can be downloaded [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/raw/master/assignments/ecse427_comp310_assignment1.zip).  
 
 > [**Assignment 2: The Kernel and Process Execution**]()  
 > This is the final submission for assignment 2.  
