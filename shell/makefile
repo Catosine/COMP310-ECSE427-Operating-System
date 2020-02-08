@@ -1,5 +1,13 @@
-prom = mysh
-obj = shell.o interpreter.o shellmemory.o
+prom=mykernel
+
+dir_bin=./bin
+dir_src=./src
+dir_inc=./inc
+
+src_file=$(wildcard ${dir_src}/*.c)
+obj_file=$(patsubst %.c,%.o,$(notdir ${src_file}))
+
+zip = ecse427_comp310_assignment2_pengnan_260768510.zip
 
 crazy_test: $(prom)
 	bash crazy_tester_generator.sh 100
@@ -7,14 +15,15 @@ crazy_test: $(prom)
 test: $(prom)
 	./$(prom) < testfile.txt
 
-$(prom): $(obj)
-	gcc -o $(prom) $(obj)
+build: ${obj_file}
+	gcc -o $(prom) ${obj_file}
+	mv ${obj_file} ${dir_bin}
 
-%.o: %.c
-	gcc -c $<
+${obj_file}:
+	gcc -c ${src_file} -I ${dir_inc}
 
 pack: $(prom)
-	zip ecse427_comp310_assignment1_pengnan_260768510.zip shell.c shell.h shellmemory.c shellmemory.h interpreter.c interpreter.h README.txt makefile testfile.txt crazy_tester_generator.sh $(prom)
+	zip $(zip) $(submission)
 
 clean:
-	rm -f $(obj) $(prom)
+	rm ${dir_bin}/*

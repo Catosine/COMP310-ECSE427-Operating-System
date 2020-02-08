@@ -4,7 +4,7 @@
 #include <regex.h>
 #include <unistd.h>
 #include "shellmemory.h"
-#include "shell.h"
+#include "kernel.h"
 
 // Declaration of main functions
 int decoder(int status, char *cmd);
@@ -16,7 +16,9 @@ int quit();
 int there_is_nothing_to_do_with_get(char **tokenized_words);
 int there_is_nothing_to_do_with_printf(char **tokenized_words);
 int run(char **tokenized_words);
+int exec(char **tokenized_words);
 int find_last_token(char **tokenized_word);
+int check_if_txt(char *name);
 
 //--------------------- Start of Code Body ---------------------//
 
@@ -76,6 +78,10 @@ int interpreter(char **tokenized_words)
         // empty command
         return 0;
     }
+    else if (strcmp(*tokenized_words, "exec") == 0)
+    {
+        return exec(tokenized_words);
+    }
     else
     {
         // all other undefined command
@@ -91,6 +97,7 @@ int help()
     printf("set VAR STRING\t\tAssign a value to shell memory\n");
     printf("print VAR\t\tDisplays the STRING assigned to VAR\n");
     printf("run SCRIPT.TXT\t\tExecutes the file SCRIPT.TXT\n");
+    printf("exec p1 p2 p3\t\tExecutes concurrent programs\n\t\t\t$ exec prog.txt prog2.txt\n");
     return 0;
 }
 
@@ -162,14 +169,8 @@ int run(char **tokenized_word)
         return -1;
     }
 
-    // setup regular expression for .txt file
-    regex_t reg;
-    const char *pattern = "^.*\\.(txt)?$";
-    regcomp(&reg, pattern, REG_EXTENDED);
-    const size_t nmatch = 1;
-    regmatch_t pmatch[1];
-    int status = regexec(&reg, *(tokenized_word + 1), nmatch, pmatch, 0);
-    regfree(&reg);
+    // check if it is a txt file
+    int status = check_if_txt(*(tokenized_word+1));
 
     if (status == REG_NOMATCH)
     {
@@ -237,10 +238,46 @@ int run(char **tokenized_word)
     return -1;
 }
 
+int exec(char **tokenized_words){
+    int zero_idx = find_last_token(tokenized_words);
+    if(zero_idx<=1)
+    {
+        printf("Invalid exec command format. Please follow: exec prog.txt prog2.txt\n");
+        return -1;
+    }
+    else if(zero_idx>4)
+    {
+        printf("Invalid exec command format. At most three programs are supported.\n");
+        return -1;
+    }
+    else
+    {
+        for(int id=1; id<zero_idx; id++)
+        {
+            int status = check_if_txt(*(tokenized_words+id));
+            printf("status: %d\n", status);
+        }
+    }
+    return 0;
+}
+
 int find_last_token(char **tokenized_word)
 {
     int zero_idx = 0;
     for (; strcmp(*(tokenized_word + zero_idx), "\0") != 0; zero_idx++)
         ;
     return zero_idx;
+}
+
+int check_if_txt(char *name)
+{
+    // setup regular expression for .txt file
+    regex_t reg;
+    const char *pattern = "^.*\\.(txt)?$";
+    regcomp(&reg, pattern, REG_EXTENDED);
+    const size_t nmatch = 1;
+    regmatch_t pmatch[1];
+    int status = regexec(&reg, name, nmatch, pmatch, 0);
+    regfree(&reg);
+    return status;
 }

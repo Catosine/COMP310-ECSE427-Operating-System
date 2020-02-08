@@ -70,7 +70,7 @@ int parse(char *cmd)
     
 }
 
-int main()
+int shellUI()
 {
     // assign memory space for display and command
     display = (char *)malloc(100 * sizeof(char));
@@ -84,7 +84,7 @@ int main()
     int errorCode = 0;
 
     // Login Interface
-    printf("Welcome to the Pengnan Fan shell\nVersion 1.0 Created January 2020\n");
+    printf("Kernel 1.0 loaded!\nWelcome to the Pengnan Fan shell!\nShell Version 2.0 Updated February 2020\n");
     strcpy(display, "& ");
 
     while (1)

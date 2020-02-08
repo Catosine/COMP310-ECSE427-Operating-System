@@ -1,1 +1,0 @@
-int parse(char *cmd);
