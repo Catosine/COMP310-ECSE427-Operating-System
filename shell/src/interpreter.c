@@ -171,71 +171,43 @@ int run(char **tokenized_word)
 
     // check if it is a txt file
     int status = check_if_txt(*(tokenized_word+1));
+    if (status) {return status;}
+    
 
-    if (status == REG_NOMATCH)
+    // read the script and processing
+    FILE *fp = fopen(*(tokenized_word + 1), "r");
+
+    if (fp)
     {
-        // Input does not contain *.txt
-        printf("Message: A .txt file is required as script\n");
+        char *cmd = (char *)malloc(1000 * sizeof(char));
+
+        while (fgets(cmd, 999, fp))
+        {
+            status = parse(cmd);
+            if (decoder(status, cmd) || status)
+            {
+                return 0;
+            }
+            strcpy(cmd, "");
+        }
+
+        fclose(fp);
+        free(cmd);
+        free(tokenized_word);
+        tokenized_word = NULL;
+        cmd = NULL;
+
+        return 0;
+    }
+    else
+    {
+        printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
+
+        free(tokenized_word);
+        tokenized_word = NULL;
+
         return -1;
     }
-    else if (status == 0)
-    {
-        // script is confirmed as .txt file
-        int existCheck = access(*(tokenized_word + 1), F_OK); //existance check
-        int readCheck = access(*(tokenized_word + 1), R_OK);  //readability check
-        if (existCheck == -1)
-        {
-            // cannot find the file
-            printf("Message: File: %s does not exist\n", *(tokenized_word + 1));
-            return -1;
-        }
-        if (readCheck == -1)
-        {
-            // no reading access to the file
-            printf("Message: No access to file: %s\n", *(tokenized_word + 1));
-            return 3;
-        }
-
-        // read the script and processing
-        FILE *fp = fopen(*(tokenized_word + 1), "r");
-
-        if (fp)
-        {
-            char *cmd = (char *)malloc(1000 * sizeof(char));
-
-            while (fgets(cmd, 999, fp))
-            {
-                int status = parse(cmd);
-                if (decoder(status, cmd) || status)
-                {
-                    return 0;
-                }
-                strcpy(cmd, "");
-            }
-
-            fclose(fp);
-            free(cmd);
-            free(tokenized_word);
-            tokenized_word = NULL;
-            cmd = NULL;
-
-            return 0;
-        }
-        else
-        {
-            printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
-
-            free(tokenized_word);
-            tokenized_word = NULL;
-
-            return -1;
-        }
-    }
-
-    free(tokenized_word);
-    tokenized_word = NULL;
-
-    return -1;
 }
 
 int exec(char **tokenized_words){
@@ -279,5 +251,30 @@ int check_if_txt(char *name)
     regmatch_t pmatch[1];
     int status = regexec(&reg, name, nmatch, pmatch, 0);
     regfree(&reg);
-    return status;
+
+    if (status == REG_NOMATCH)
+    {
+        // Input does not contain *.txt
+        printf("Message: A .txt file is required as script\n");
+        return -1;
+    }
+    else if (status == 0)
+    {
+        // script is confirmed as .txt file
+        int existCheck = access(name, F_OK); //existance check
+        int readCheck = access(name, R_OK);  //readability check
+        if (existCheck == -1)
+        {
+            // cannot find the file
+            printf("Message: File: %s does not exist\n", name);
+            return -1;
+        }
+        if (readCheck == -1)
+        {
+            // no reading access to the file
+            printf("Message: No access to file: %s\n", name);
+            return 3;
+        }
+        return status;
+    }
 }
