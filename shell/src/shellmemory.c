@@ -1,15 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-struct MEM
-{
-    char *var;
-    char *value;
-};
+#include "shellmemory.h"
 
 int mem_len; // memory size assigned
-struct MEM *memory = NULL;
+MEM *memory = NULL;
 int max_mem = 0; // max size of value stored in memory
 
 // Number of element kept in the memory
@@ -43,7 +38,7 @@ int getMemSize()
 int initMem(int size)
 {
     // assign memory space
-    memory = (struct MEM *)malloc(size * sizeof(struct MEM));
+    memory = (MEM *)malloc(size * sizeof(MEM));
 
     // initialize each memory struct
     for (int i = 0; i < size; i++)
@@ -100,7 +95,7 @@ int createMem(char *var, char *value)
         int hash_value = hash(var);
         for (int i = 0; i < mem_len; i++)
         {
-            struct MEM *toCheck = memory + (hash_value + i) % mem_len;
+            MEM *toCheck = memory + (hash_value + i) % mem_len;
             if (!toCheck->var)
             {
                 // if empty slot
@@ -152,7 +147,7 @@ int deleteMem(char *var, char *value)
     int idx = existMem(var);
     if (idx >= 0)
     {
-        struct MEM *toDelete = (memory + idx);
+        MEM *toDelete = (memory + idx);
 
         // free pointer in toDelete
         free(toDelete->var);
@@ -191,11 +186,11 @@ int clearMem()
 {
     for (int i = 0; i < size; i++)
     {   
-        struct MEM * toClear = memory+i;
+        MEM * toClear = memory+i;
         free(toClear->var);
         free(toClear->value);
-        (memory + i)->var = NULL;
-        (memory + i)->value = NULL;
+        toClear->var = NULL;
+        toClear->value = NULL;
     }
     free(memory);
     memory = NULL;

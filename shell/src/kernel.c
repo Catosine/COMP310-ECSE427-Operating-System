@@ -3,6 +3,7 @@
 #include <string.h>
 #include "interpreter.h"
 #include "shellmemory.h"
+#include "ram.h"
 
 char *display; //TODO: Support customized display
 char *cmd;     //Command line
@@ -80,6 +81,7 @@ int shellUI()
 
     // Initialize memory space
     initMem(memory_size);
+    initRam();
 
     int errorCode = 0;
 
@@ -97,6 +99,8 @@ int shellUI()
         fgets(cmd, 999, stdin);
 
         if(decoder(parse(cmd), cmd)){
+            free(cmd);
+            cmd = NULL;
             break;
         }
 

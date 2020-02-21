@@ -171,7 +171,12 @@ int run(char **tokenized_word)
 
     // check if it is a txt file
     int status = check_if_txt(*(tokenized_word+1));
-    if (status) {return status;}
+    if (status) 
+    {
+        free(tokenized_word);
+        tokenized_word = NULL;
+        return status;
+    }
     
 
     // read the script and processing
@@ -186,23 +191,23 @@ int run(char **tokenized_word)
             status = parse(cmd);
             if (decoder(status, cmd) || status)
             {
-                return 0;
+                goto dead;
             }
             strcpy(cmd, "");
         }
-
-        fclose(fp);
-        free(cmd);
-        free(tokenized_word);
-        tokenized_word = NULL;
-        cmd = NULL;
+        dead:
+            fclose(fp);
+            free(cmd);
+            free(tokenized_word);
+            tokenized_word = NULL;
+            cmd = NULL;
 
         return 0;
     }
     else
     {
         printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
-
+        fclose(fp);
         free(tokenized_word);
         tokenized_word = NULL;
 

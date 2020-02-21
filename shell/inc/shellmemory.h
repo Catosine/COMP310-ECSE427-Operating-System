@@ -1,3 +1,8 @@
+typedef struct Memory
+{
+    char *var;
+    char *value;
+}MEM;
 int initMem(int size);
 int createMem(char *var, char *value);
 int readMem(char *var, char *value);
