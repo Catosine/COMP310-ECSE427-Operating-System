@@ -12,9 +12,6 @@ make build
 # To test the shell
 make test
 
-# To test the shell with crazy tester
-make crazy_test
-
 # To pack up for submission
 make pack
 
