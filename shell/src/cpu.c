@@ -18,11 +18,8 @@ CPU *hisilicon()
 
 int deleteCPU(CPU *kirin)
 {
-    if (kirin->IR)
-    {
-        free(kirin->IR);
-        kirin->IR = NULL;
-    }
+
+    kirin->IR = NULL;
 
     free(kirin);
     kirin = NULL;
@@ -41,9 +38,10 @@ int runCPU(CPU *kirin)
             return -1;
         }
 
-        if (interpreter(parse(kirin->IR)))
+        int status = interpreter(parse(kirin->IR));
+        if (!status&&decoder(status, kirin->IR))
         {
-            return 2;
+            return status;
         }
 
         kirin->IP++;

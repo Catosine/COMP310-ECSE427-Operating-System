@@ -17,7 +17,7 @@ int deletePCB(PCB *pcb)
 {
     if(pcb->next)
     {
-        deletePCB(pcb->next);
+        pcb->next = NULL;
     }
 
     free(pcb);

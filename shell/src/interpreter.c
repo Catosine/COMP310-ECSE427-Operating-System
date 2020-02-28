@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "shellmemory.h"
 #include "kernel.h"
+#include "ram.h"
 
 // Declaration of main functions
 int decoder(int status, char *cmd);
@@ -240,6 +241,7 @@ int exec(char **tokenized_words)
             if (status)
             {
                 freeToken(tokenized_words);
+                clearReadyQueue();
                 return status;
             }
             else
@@ -247,6 +249,7 @@ int exec(char **tokenized_words)
                 if (myinit(*(tokenized_words + id)))
                 {
                     freeToken(tokenized_words);
+                    clearReadyQueue();
                     return -1;
                 }
             }
@@ -255,7 +258,7 @@ int exec(char **tokenized_words)
         freeToken(tokenized_words);
 
         return scheduler();
-        
+
         }
 }
 

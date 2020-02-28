@@ -19,6 +19,17 @@ PCB *head = NULL; // pointer to the first PCB
 PCB *tail = NULL; // pointer to the last PCB
 CPU *kirin990;
 
+int clearReadyQueue(){
+    PCB* curr = head;
+    while(curr)
+    {
+        PCB* next = head->next;
+        deletePCB(curr);
+        curr = next;
+    }
+    return 0;
+}
+
 int clearShell()
 {
     free(display);
@@ -120,6 +131,7 @@ int shellUI()
     clearMem();
     clearRamAll();
     deleteCPU(kirin990);
+    clearReadyQueue();
 
     return 0;
 }
@@ -201,11 +213,25 @@ int scheduler()
 
         curr->PC = kirin990->IP;
 
-        if (!status && curr->PC <= curr->end)
+        if (status==0 && curr->PC <= curr->end)
         {
             addToReady(curr);
         }
-
+        else
+        {   
+            if(status==2)
+            {
+                // quit detected
+                deletePCB(curr);
+            } 
+            else 
+            {
+                // error
+                clearReadyQueue();
+                return status;
+            }
+        }
+        
         curr = popFromReady();
     }
 

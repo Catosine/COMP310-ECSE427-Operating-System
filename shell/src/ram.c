@@ -76,12 +76,19 @@ void addToRAM(FILE *p, int *start, int *end)
             goto fail;
         }
 
+        if (!strcmp(cmd, "\n"))
+        {
+            continue;            
+        }
+
         size_t cmd_size = (strlen(cmd) + 1) * sizeof(char);
+        
         ram[firstAvailable] = (char *)malloc(cmd_size);
 
         memcpy(ram[firstAvailable], cmd, cmd_size);
 
         firstAvailable++;
+
     }
 
     *end = firstAvailable - 1;
