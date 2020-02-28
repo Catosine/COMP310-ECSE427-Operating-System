@@ -1,1 +1,4 @@
-int initRam();
+int initRam(int size);
+int clearRam(int start, int end);
+int clearRamAll();
+void addToRAM(FILE* p, int *start, int *end);

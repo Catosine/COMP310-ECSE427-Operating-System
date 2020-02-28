@@ -184,7 +184,7 @@ int getMaxMem() { return max_mem; }
 
 int clearMem()
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < mem_len; i++)
     {   
         MEM * toClear = memory+i;
         free(toClear->var);

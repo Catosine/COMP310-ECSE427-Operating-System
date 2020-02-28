@@ -4,9 +4,17 @@
 #include "interpreter.h"
 #include "shellmemory.h"
 #include "ram.h"
+#include "pcb.h"
 
-char *display; //TODO: Support customized display
-char *cmd;     //Command line
+#define DISPLAY_SIZE 100
+#define CMD_BUFFER_SIZE 1000
+#define MEM_SIZE 1000
+#define RAM_SIZE 1000
+
+char *display;      // TODO: Support customized display
+char *cmd;          // Command line
+PCB* head = NULL;   // pointer to the first PCB
+PCB* tail = NULL;   // pointer to the last PCB
 
 int clearShell()
 {
@@ -17,7 +25,7 @@ int clearShell()
     return 0;
 }
 
-int parse(char *cmd)
+char** parse(char *cmd)
 {
 
     //List of used parameters
@@ -27,8 +35,7 @@ int parse(char *cmd)
     int offset = 0;
 
     // Skip all white spaces in the front of cmd
-    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++)
-        ;
+    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++);
 
     // Tokenized the cmd
     int times = 0;
@@ -67,21 +74,19 @@ int parse(char *cmd)
     free(tmp);
     tmp = NULL;
 
-    return interpreter(words);
+    return words;
     
 }
 
 int shellUI()
 {
     // assign memory space for display and command
-    display = (char *)malloc(100 * sizeof(char));
-    cmd = (char *)malloc(1000 * sizeof(char));
-
-    int memory_size = 100;
+    display = (char *)malloc(DISPLAY_SIZE * sizeof(char));
+    cmd = (char *)malloc(CMD_BUFFER_SIZE * sizeof(char));
 
     // Initialize memory space
-    initMem(memory_size);
-    initRam();
+    initMem(MEM_SIZE);
+    initRam(RAM_SIZE);
 
     int errorCode = 0;
 
@@ -96,9 +101,10 @@ int shellUI()
 
         printf("%s", display);
 
-        fgets(cmd, 999, stdin);
-
-        if(decoder(parse(cmd), cmd)){
+        fgets(cmd, CMD_BUFFER_SIZE-1, stdin);
+        
+        int status = interpreter(parse(cmd));
+        if(decoder(status, cmd)){
             free(cmd);
             cmd = NULL;
             break;
@@ -108,7 +114,55 @@ int shellUI()
 
     clearShell();
     clearMem();
+    clearRamAll();
 
     return 0;
+
+}
+
+void addToReady(PCB* newPCB)
+{
+    if(!head&&!tail)
+    {
+        head = newPCB;
+        tail = newPCB;
+    } 
+    else 
+    {
+        tail->next = newPCB;
+        tail = newPCB;
+    }
+}
+
+int myinit(char *filename)
+{
+    FILE *fp = fopen(filename, "r");
+    if (fp)
+    {
+        int start, end;
+        addToRAM(fp, &start, &end);
+        fclose(fp);
+
+        if(start<0||end<0)
+        {
+            printf("Message: CANNOT load the file: %s to RAM\n", filename);
+            goto fail;
+        }
+        
+        PCB* pcb = makePCB(start, end);
+
+        addToReady(pcb);
+
+    } else {
+        printf("Message: CANNOT open the file: %s\n", filename);
+        fail:
+            clearRamAll();
+            fclose(fp);
+            return -1;
+    }
+}
+
+int scheduler()
+{
 
 }

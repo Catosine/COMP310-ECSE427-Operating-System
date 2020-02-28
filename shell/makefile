@@ -27,4 +27,4 @@ pack: $(prom)
 	zip $(zip) $(src_file) $(inc_file) README.txt $(prom) testfile.txt
 
 clean:
-	rm ${dir_bin}/*
+	rm ${dir_bin}/* ./*.o

@@ -11,14 +11,15 @@ int decoder(int status, char *cmd);
 int interpreter(char **tokenized_words);
 
 // Delcaration of executions
-int help();
-int quit();
+int help(char **tokenized_words);
+int quit(char **tokenized_words);
 int there_is_nothing_to_do_with_get(char **tokenized_words);
 int there_is_nothing_to_do_with_printf(char **tokenized_words);
 int run(char **tokenized_words);
 int exec(char **tokenized_words);
 int find_last_token(char **tokenized_word);
 int check_if_txt(char *name);
+int freeToken(char** tokenized_words);
 
 //--------------------- Start of Code Body ---------------------//
 
@@ -51,12 +52,12 @@ int interpreter(char **tokenized_words)
     if (strcmp(*tokenized_words, "help") == 0)
     {
         // help
-        return help();
+        return help(tokenized_words);
     }
     else if (strcmp(*tokenized_words, "quit") == 0)
     {
         // quit
-        return quit();
+        return quit(tokenized_words);
     }
     else if (strcmp(*tokenized_words, "set") == 0)
     {
@@ -89,8 +90,9 @@ int interpreter(char **tokenized_words)
     }
 }
 
-int help()
-{
+int help(char **tokenized_words)
+{   
+    freeToken(tokenized_words);
     printf("COMMAND\t\t\tDESCRIPTION\n\n");
     printf("help\t\t\tDisplays all the commands\n");
     printf("quit\t\t\tExits / terminates the shell with “Bye!”\n");
@@ -101,8 +103,9 @@ int help()
     return 0;
 }
 
-int quit()
+int quit(char** tokenized_words)
 {
+    freeToken(tokenized_words);
     printf("Bye!\n");
     return 2;
 }
@@ -114,6 +117,7 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
     {
         // invalid input: STRING missing
         printf("Message: Invalid set command format. Please follow: set VAR STRING\n");
+        freeToken(tokenized_word);
         return -1;
     }
 
@@ -124,8 +128,7 @@ int there_is_nothing_to_do_with_get(char **tokenized_word)
         printf("Message: %s\n", *(tokenized_word + 2));
     }
 
-    free(tokenized_word);
-    tokenized_word = NULL;
+    freeToken(tokenized_word);
     return status;
 }
 
@@ -152,9 +155,8 @@ int there_is_nothing_to_do_with_printf(char **tokenized_word)
     }
 
     free(value);
-    free(tokenized_word);
+    freeToken(tokenized_word);
     value = NULL;
-    tokenized_word = NULL;
 
     return status;
 }
@@ -166,6 +168,7 @@ int run(char **tokenized_word)
     {
         // invalid input: SCRIPT.TXT missing
         printf("Message: Invalid run command format. Please follow: run SCRIPT.TXT\n");
+        freeToken(tokenized_word);
         return -1;
     }
 
@@ -173,11 +176,9 @@ int run(char **tokenized_word)
     int status = check_if_txt(*(tokenized_word+1));
     if (status) 
     {
-        free(tokenized_word);
-        tokenized_word = NULL;
+        freeToken(tokenized_word);
         return status;
     }
-    
 
     // read the script and processing
     FILE *fp = fopen(*(tokenized_word + 1), "r");
@@ -188,7 +189,7 @@ int run(char **tokenized_word)
 
         while (fgets(cmd, 999, fp))
         {
-            status = parse(cmd);
+            status = interpreter(parse(cmd));
             if (decoder(status, cmd) || status)
             {
                 goto dead;
@@ -198,8 +199,7 @@ int run(char **tokenized_word)
         dead:
             fclose(fp);
             free(cmd);
-            free(tokenized_word);
-            tokenized_word = NULL;
+            freeToken(tokenized_word);
             cmd = NULL;
 
         return 0;
@@ -208,8 +208,7 @@ int run(char **tokenized_word)
     {
         printf("Message: CANNOT open the file: %s\n", *(tokenized_word + 1));
         fclose(fp);
-        free(tokenized_word);
-        tokenized_word = NULL;
+        freeToken(tokenized_word);
 
         return -1;
     }
@@ -217,11 +216,13 @@ int run(char **tokenized_word)
 
 int exec(char **tokenized_words){
     int zero_idx = find_last_token(tokenized_words);
+
     if(zero_idx<=1)
     {
         printf("Invalid exec command format. Please follow: exec prog.txt prog2.txt\n");
         return -1;
     }
+
     else if(zero_idx>4)
     {
         printf("Invalid exec command format. At most three programs are supported.\n");
@@ -232,9 +233,19 @@ int exec(char **tokenized_words){
         for(int id=1; id<zero_idx; id++)
         {
             int status = check_if_txt(*(tokenized_words+id));
-            printf("status: %d\n", status);
+            if(status){
+                freeToken(tokenized_words);
+                return status;
+            } else {
+                if(myinit(*(tokenized_words+id))){
+                    freeToken(tokenized_words);
+                    return -1;
+                }
+            }
         }
     }
+    
+    freeToken(tokenized_words);
     return 0;
 }
 
@@ -282,4 +293,18 @@ int check_if_txt(char *name)
         }
         return status;
     }
+}
+
+int freeToken(char** tokenized_words)
+{
+    int i = 0;
+    for(; strcmp(*(tokenized_words + i), "\0") != 0; i++){
+        free(*(tokenized_words + i));
+        *(tokenized_words + i) = NULL;
+    }
+    free(*(tokenized_words + i));
+    *(tokenized_words + i) = NULL;
+    free(tokenized_words);
+    tokenized_words = NULL;
+    return 0;
 }
