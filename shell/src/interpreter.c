@@ -50,37 +50,37 @@ int decoder(int status, char *cmd)
 
 int interpreter(char **tokenized_words)
 {
-    if (strcmp(*tokenized_words, "help") == 0)
+    if (!strcmp(*tokenized_words, "help"))
     {
         // help
         return help(tokenized_words);
     }
-    else if (strcmp(*tokenized_words, "quit") == 0)
+    else if (!strcmp(*tokenized_words, "quit"))
     {
         // quit
         return quit(tokenized_words);
     }
-    else if (strcmp(*tokenized_words, "set") == 0)
+    else if (!strcmp(*tokenized_words, "set"))
     {
         // set VAR STRING
         return there_is_nothing_to_do_with_get(tokenized_words);
     }
-    else if (strcmp(*tokenized_words, "print") == 0)
+    else if (!strcmp(*tokenized_words, "print"))
     {
         // print VAR
         return there_is_nothing_to_do_with_printf(tokenized_words);
     }
-    else if (strcmp(*tokenized_words, "run") == 0)
+    else if (!strcmp(*tokenized_words, "run"))
     {
         // run SCRIPT.TXT
         return run(tokenized_words);
     }
-    else if (strcmp(*tokenized_words, "\0") == 0)
+    else if (!strcmp(*tokenized_words, "\0"))
     {
         // empty command
         return 0;
     }
-    else if (strcmp(*tokenized_words, "exec") == 0)
+    else if (!strcmp(*tokenized_words, "exec"))
     {
         return exec(tokenized_words);
     }

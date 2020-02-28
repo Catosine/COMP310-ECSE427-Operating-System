@@ -1,7 +1,7 @@
 #include "kernel.h"
 
 // main function for HarmonyOS
-int main()
+int main(int argc, char **argv)
 {
-    return shellUI();
+    return shellUI(argc, argv);
 }

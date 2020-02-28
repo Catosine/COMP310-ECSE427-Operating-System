@@ -39,7 +39,7 @@ int runCPU(CPU *kirin)
         }
 
         int status = interpreter(parse(kirin->IR));
-        if (!status&&decoder(status, kirin->IR))
+        if (status||decoder(status, kirin->IR))
         {
             return status;
         }

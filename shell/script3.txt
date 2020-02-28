@@ -1,0 +1,3 @@
+set z 30
+print z
+quit

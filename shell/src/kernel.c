@@ -19,11 +19,12 @@ PCB *head = NULL; // pointer to the first PCB
 PCB *tail = NULL; // pointer to the last PCB
 CPU *kirin990;
 
-int clearReadyQueue(){
-    PCB* curr = head;
-    while(curr)
+int clearReadyQueue()
+{
+    PCB *curr = head;
+    while (curr)
     {
-        PCB* next = head->next;
+        PCB *next = head->next;
         deletePCB(curr);
         curr = next;
     }
@@ -54,10 +55,10 @@ char **parse(char *cmd)
 
     // Tokenized the cmd
     int times = 0;
-    while (*(cmd + start) != '\0' && *(cmd + start) != '\n')
+    while (*(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd+start) != 13)
     {
 
-        for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && start < 1000; start++, idx++)
+        for (idx = 0; *(cmd + start) != '\0' && *(cmd + start) != '\n' && *(cmd + start) != '\t' && *(cmd+start) != 13 && start < 1000; start++, idx++)
         {
 
             if (*(cmd + start) == '\\' && *(cmd + start + 1) == ' ')
@@ -92,8 +93,9 @@ char **parse(char *cmd)
     return words;
 }
 
-int shellUI()
+int shellUI(int argc, char **argv)
 {
+
     // assign memory space for display and command
     display = (char *)malloc(DISPLAY_SIZE * sizeof(char));
     cmd = (char *)malloc(CMD_BUFFER_SIZE * sizeof(char));
@@ -125,6 +127,7 @@ int shellUI()
         {
             break;
         }
+
     }
 
     clearShell();
@@ -167,6 +170,9 @@ PCB *popFromReady()
 
 int myinit(char *filename)
 {
+
+    printf("start loading: %s\n", filename);
+
     FILE *fp = fopen(filename, "r");
     if (fp)
     {
@@ -228,7 +234,7 @@ int scheduler()
             {
                 // error
                 clearReadyQueue();
-                return status;
+                return -1;
             }
         }
         
