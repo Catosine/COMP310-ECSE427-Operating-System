@@ -11,8 +11,8 @@ All codes are developed on a server of McGill: `mimi.cs.mcgill.ca`.
 > A zip can be downloaded [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/raw/master/assignments/ecse427_comp310_assignment1.zip).  
 
 > **Assignment 2: The Kernel and Process Execution**  
-> Codes can be viewd [here]().  
-> A zip can be downloaded [here]().  
+> Codes can be viewd [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/tree/2976d1cc956d00c29765fb4ff6c0a4ddfae5c8a0/HarmonyOS).  
+> A zip can be downloaded [here](https://github.com/Catosine/COMP310-ECSE427-Operating-System/blob/master/assignments/ecse427_comp310_assignment2.zip).  
 
 ## Note  
 All codes will be released after each due dates.  
