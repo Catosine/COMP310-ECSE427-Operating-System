@@ -1,14 +1,27 @@
 #include <stdlib.h>
 #include "pcb.h"
 
-PCB* makePCB(int start, int end)
+PCB *makePCB(int start, int end)
 {
-    PCB* pcb = (PCB*)malloc(sizeof(PCB));
+    PCB *pcb = (PCB *)malloc(sizeof(PCB));
 
     pcb->start = start;
     pcb->end = end;
-    pcb->PC = 0;
+    pcb->PC = start;
     pcb->next = NULL;
-    
+
     return pcb;
+}
+
+int deletePCB(PCB *pcb)
+{
+    if(pcb->next)
+    {
+        deletePCB(pcb->next);
+    }
+
+    free(pcb);
+    pcb = NULL;
+
+    return 0;
 }

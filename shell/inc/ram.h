@@ -1,4 +1,7 @@
+#include <stdio.h>
+
 int initRam(int size);
 int clearRam(int start, int end);
 int clearRamAll();
-void addToRAM(FILE* p, int *start, int *end);
+void addToRAM(FILE *p, int *start, int *end);
+char *readSlot(int index);

@@ -7,3 +7,4 @@ typedef struct pcb
 } PCB;
 
 PCB* makePCB(int start, int end);
+int deletePCB(PCB* pcb);

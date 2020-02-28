@@ -5,16 +5,19 @@
 #include "shellmemory.h"
 #include "ram.h"
 #include "pcb.h"
+#include "cpu.h"
 
 #define DISPLAY_SIZE 100
 #define CMD_BUFFER_SIZE 1000
 #define MEM_SIZE 1000
 #define RAM_SIZE 1000
+#define QUANTA 2
 
-char *display;      // TODO: Support customized display
-char *cmd;          // Command line
-PCB* head = NULL;   // pointer to the first PCB
-PCB* tail = NULL;   // pointer to the last PCB
+char *display;    // TODO: Support customized display
+char *cmd;        // Command line
+PCB *head = NULL; // pointer to the first PCB
+PCB *tail = NULL; // pointer to the last PCB
+CPU *kirin990;
 
 int clearShell()
 {
@@ -25,7 +28,7 @@ int clearShell()
     return 0;
 }
 
-char** parse(char *cmd)
+char **parse(char *cmd)
 {
 
     //List of used parameters
@@ -35,7 +38,8 @@ char** parse(char *cmd)
     int offset = 0;
 
     // Skip all white spaces in the front of cmd
-    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++);
+    for (start = 0; *(cmd + start) == ' ' && start < 1000; start++)
+        ;
 
     // Tokenized the cmd
     int times = 0;
@@ -75,7 +79,6 @@ char** parse(char *cmd)
     tmp = NULL;
 
     return words;
-    
 }
 
 int shellUI()
@@ -87,6 +90,9 @@ int shellUI()
     // Initialize memory space
     initMem(MEM_SIZE);
     initRam(RAM_SIZE);
+
+    // Initialize CPU
+    kirin990 = hisilicon();
 
     int errorCode = 0;
 
@@ -101,37 +107,50 @@ int shellUI()
 
         printf("%s", display);
 
-        fgets(cmd, CMD_BUFFER_SIZE-1, stdin);
-        
+        fgets(cmd, CMD_BUFFER_SIZE - 1, stdin);
+
         int status = interpreter(parse(cmd));
-        if(decoder(status, cmd)){
-            free(cmd);
-            cmd = NULL;
+        if (decoder(status, cmd))
+        {
             break;
         }
-
     }
 
     clearShell();
     clearMem();
     clearRamAll();
+    deleteCPU(kirin990);
 
     return 0;
-
 }
 
-void addToReady(PCB* newPCB)
+void addToReady(PCB *newPCB)
 {
-    if(!head&&!tail)
+    if (!head && !tail)
     {
         head = newPCB;
         tail = newPCB;
-    } 
-    else 
+    }
+    else
     {
         tail->next = newPCB;
         tail = newPCB;
     }
+}
+
+PCB *popFromReady()
+{
+    PCB *toReturn = head;
+    if (head == tail)
+    {
+        head = NULL;
+        tail = NULL;
+    }
+    else
+    {
+        head = head->next;
+    }
+    return toReturn;
 }
 
 int myinit(char *filename)
@@ -143,26 +162,52 @@ int myinit(char *filename)
         addToRAM(fp, &start, &end);
         fclose(fp);
 
-        if(start<0||end<0)
+        if (start < 0 || end < 0)
         {
             printf("Message: CANNOT load the file: %s to RAM\n", filename);
             goto fail;
         }
-        
-        PCB* pcb = makePCB(start, end);
 
-        addToReady(pcb);
+        addToReady(makePCB(start, end));
 
-    } else {
+        fclose(fp);
+
+        return 0;
+    }
+    else
+    {
         printf("Message: CANNOT open the file: %s\n", filename);
-        fail:
-            clearRamAll();
-            fclose(fp);
-            return -1;
+    fail:
+        clearRamAll();
+        fclose(fp);
+        return -1;
     }
 }
 
 int scheduler()
 {
+    PCB *curr = popFromReady();
+    while (curr)
+    {
+        // load to cpu w.r.t. pcb
+        kirin990->IP = curr->PC;
 
+        // compute & load quanta
+        int quanta = curr->end - curr->PC;
+        quanta = (quanta >= QUANTA - 1) ? QUANTA : QUANTA - 1;
+        kirin990->quanta = quanta;
+
+        int status = runCPU(kirin990);
+
+        curr->PC = kirin990->IP;
+
+        if (!status && curr->PC <= curr->end)
+        {
+            addToReady(curr);
+        }
+
+        curr = popFromReady();
+    }
+
+    return 0;
 }

@@ -19,7 +19,7 @@ int run(char **tokenized_words);
 int exec(char **tokenized_words);
 int find_last_token(char **tokenized_word);
 int check_if_txt(char *name);
-int freeToken(char** tokenized_words);
+int freeToken(char **tokenized_words);
 
 //--------------------- Start of Code Body ---------------------//
 
@@ -91,7 +91,7 @@ int interpreter(char **tokenized_words)
 }
 
 int help(char **tokenized_words)
-{   
+{
     freeToken(tokenized_words);
     printf("COMMAND\t\t\tDESCRIPTION\n\n");
     printf("help\t\t\tDisplays all the commands\n");
@@ -103,7 +103,7 @@ int help(char **tokenized_words)
     return 0;
 }
 
-int quit(char** tokenized_words)
+int quit(char **tokenized_words)
 {
     freeToken(tokenized_words);
     printf("Bye!\n");
@@ -139,6 +139,7 @@ int there_is_nothing_to_do_with_printf(char **tokenized_word)
     {
         // invalid input: VAR missing
         printf("Message: Invalid print command format. Please follow: print VAR\n");
+        freeToken(tokenized_word);
         return -1;
     }
     char *value = (char *)malloc((getMaxMem() + 1) * sizeof(char));
@@ -173,8 +174,8 @@ int run(char **tokenized_word)
     }
 
     // check if it is a txt file
-    int status = check_if_txt(*(tokenized_word+1));
-    if (status) 
+    int status = check_if_txt(*(tokenized_word + 1));
+    if (status)
     {
         freeToken(tokenized_word);
         return status;
@@ -196,11 +197,11 @@ int run(char **tokenized_word)
             }
             strcpy(cmd, "");
         }
-        dead:
-            fclose(fp);
-            free(cmd);
-            freeToken(tokenized_word);
-            cmd = NULL;
+    dead:
+        fclose(fp);
+        free(cmd);
+        freeToken(tokenized_word);
+        cmd = NULL;
 
         return 0;
     }
@@ -214,39 +215,48 @@ int run(char **tokenized_word)
     }
 }
 
-int exec(char **tokenized_words){
+int exec(char **tokenized_words)
+{
     int zero_idx = find_last_token(tokenized_words);
 
-    if(zero_idx<=1)
+    if (zero_idx <= 1)
     {
         printf("Invalid exec command format. Please follow: exec prog.txt prog2.txt\n");
+        freeToken(tokenized_words);
         return -1;
     }
-
-    else if(zero_idx>4)
+    else if (zero_idx > 4)
     {
         printf("Invalid exec command format. At most three programs are supported.\n");
+        freeToken(tokenized_words);
         return -1;
     }
     else
     {
-        for(int id=1; id<zero_idx; id++)
+        // load program into RAM
+        for (int id = 1; id < zero_idx; id++)
         {
-            int status = check_if_txt(*(tokenized_words+id));
-            if(status){
+            int status = check_if_txt(*(tokenized_words + id));
+            if (status)
+            {
                 freeToken(tokenized_words);
                 return status;
-            } else {
-                if(myinit(*(tokenized_words+id))){
+            }
+            else
+            {
+                if (myinit(*(tokenized_words + id)))
+                {
                     freeToken(tokenized_words);
                     return -1;
                 }
             }
         }
-    }
-    
-    freeToken(tokenized_words);
-    return 0;
+
+        freeToken(tokenized_words);
+
+        return scheduler();
+        
+        }
 }
 
 int find_last_token(char **tokenized_word)
@@ -295,10 +305,11 @@ int check_if_txt(char *name)
     }
 }
 
-int freeToken(char** tokenized_words)
+int freeToken(char **tokenized_words)
 {
     int i = 0;
-    for(; strcmp(*(tokenized_words + i), "\0") != 0; i++){
+    for (; strcmp(*(tokenized_words + i), "\0") != 0; i++)
+    {
         free(*(tokenized_words + i));
         *(tokenized_words + i) = NULL;
     }

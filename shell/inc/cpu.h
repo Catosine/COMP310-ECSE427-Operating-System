@@ -1,9 +1,10 @@
-typedef struct kirin980
+typedef struct kirin
 {
     int IP;
-    char* IR;
+    char *IR;
     int quanta;
 } CPU;
 
-CPU* hisilicon(int quanta); 
-void run(CPU* kirin, )
+CPU *hisilicon();
+int runCPU(CPU *kirin);
+int deleteCPU(CPU *kirin);
