@@ -12,12 +12,15 @@ zip = ecse427_comp310_assignment2_pengnan_260768510.zip
 test = testfile.txt script1.txt script2.txt script3.txt
 
 crazy_test: $(prom)
-	bash crazy_tester_generator.sh 100
+	bash crazy_tester_generator.sh 100 1000
 
 test: $(prom)
 	./$(prom) < testfile.txt
 
-build: ${obj_file}
+${dir_bin}:
+	mkdir ${dir_bin}
+
+build: ${obj_file} ${dir_bin}
 	gcc -o $(prom) ${obj_file}
 	mv ${obj_file} ${dir_bin}
 

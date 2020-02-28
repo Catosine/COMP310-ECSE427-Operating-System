@@ -1,3 +1,7 @@
 set y 20
 print y
+set y 20
+print y
+help
+help
 quit

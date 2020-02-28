@@ -1,3 +1,6 @@
 set z 30
 print z
+set z 30
+print z
+help
 quit

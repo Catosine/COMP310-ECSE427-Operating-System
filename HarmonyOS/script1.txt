@@ -4,6 +4,4 @@ set x 10
 print x
 set x 10
 print x
-set x 10
-print x
 quit

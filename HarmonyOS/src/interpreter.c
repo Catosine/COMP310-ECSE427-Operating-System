@@ -171,6 +171,7 @@ int run(char **tokenized_word)
         // invalid input: SCRIPT.TXT missing
         printf("Message: Invalid run command format. Please follow: run SCRIPT.TXT\n");
         freeToken(tokenized_word);
+        clearRamAll();
         return -1;
     }
 
@@ -179,6 +180,7 @@ int run(char **tokenized_word)
     if (status)
     {
         freeToken(tokenized_word);
+        clearRamAll();
         return status;
     }
 
@@ -203,7 +205,7 @@ int run(char **tokenized_word)
         free(cmd);
         freeToken(tokenized_word);
         cmd = NULL;
-
+        clearRamAll();
         return 0;
     }
     else

@@ -132,9 +132,8 @@ int shellUI(int argc, char **argv)
 
     clearShell();
     clearMem();
-    clearRamAll();
+    unmountRam();
     deleteCPU(kirin990);
-    clearReadyQueue();
 
     return 0;
 }
@@ -171,8 +170,6 @@ PCB *popFromReady()
 int myinit(char *filename)
 {
 
-    printf("start loading: %s\n", filename);
-
     FILE *fp = fopen(filename, "r");
     if (fp)
     {
@@ -187,8 +184,6 @@ int myinit(char *filename)
         }
 
         addToReady(makePCB(start, end));
-
-        fclose(fp);
 
         return 0;
     }
@@ -234,12 +229,15 @@ int scheduler()
             {
                 // error
                 clearReadyQueue();
+                clearRamAll();
                 return -1;
             }
         }
         
         curr = popFromReady();
     }
+
+    clearRamAll();
 
     return 0;
 }

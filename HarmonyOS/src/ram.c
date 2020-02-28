@@ -53,6 +53,8 @@ int initRam(int size)
 // it returns the next line of availiability
 void addToRAM(FILE *p, int *start, int *end)
 {
+    firstAvailable = findAvailable();
+    
     if (firstAvailable >= ram_size)
     {
         goto temp;
@@ -121,17 +123,19 @@ int clearRam(int start, int end)
 {
     for (start; start < end; start++)
     {
-        if (ram[start])
-        {
-            free(ram[start]);
-            ram[start] = NULL;
-        }
+        clearRamSlot(start);
     }
+
+    return 0;
+}
+
+int clearRamAll(){return clearRam(0, ram_size);}
+
+int unmountRam() { 
+    clearRam(0, ram_size); 
 
     free(ram);
     ram = NULL;
 
     return 0;
 }
-
-int clearRamAll() { return clearRam(0, ram_size); }
