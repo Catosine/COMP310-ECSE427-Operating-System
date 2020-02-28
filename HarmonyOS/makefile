@@ -6,7 +6,7 @@ dir_inc=./inc
 
 src_file=$(wildcard ${dir_src}/*.c)
 obj_file=$(patsubst %.c,%.o,$(notdir ${src_file}))
-obj=$(patsubst %.c,${dir_bin}/%.o,$(notdir ${src_file}))
+inc_file=$(wildcard ${dir_inc}/*.h)
 
 zip = ecse427_comp310_assignment2_pengnan_260768510.zip
 
