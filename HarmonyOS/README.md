@@ -1,4 +1,4 @@
-# **COMP 310 & ECSE 427 Course Project: Shell**  
+# **COMP 310 & ECSE 427 Course Project: HarmonyOS**  
 
 ## Development Environment  
 All codes are developed on `mimi.cs.mcgill.ca`.  
@@ -7,7 +7,7 @@ All codes are developed on `mimi.cs.mcgill.ca`.
 A `makefile` is provided together with this project. You may use the instructions provided below:  
 ```bash
 # To compile the project
-make mysh
+make build
 
 # To test the shell
 make test
@@ -29,6 +29,8 @@ Here are available commands listed below:
 > `set VAR STRING` - Set variable VAR with string STRING. Now supporting sentence as value (i.e. hello world).  
 > `print VAR` - Print the value of variable VAR.  
 > `run SCRIPT.txt` - Run the script SCRIPT.  
+> `exec script1.txt script2.txt script3.txt` - Executes concurrent programs exec prog.txt prog2.txt  
+
 
 ## Examples
 ```bash
