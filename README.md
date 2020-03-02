@@ -16,7 +16,8 @@ All codes are developed on a server of McGill: `mimi.cs.mcgill.ca`.
 
 ## Note  
 1. Any form of using materials under this repo should be cited properly.  
-2. All codes will be released after each due dates.  
+2. If you find this repo is helpful, please give me a star:)  
+3. All codes will be released after each due dates.  
 
 ## License  
 This repo is under the MIT license. 
