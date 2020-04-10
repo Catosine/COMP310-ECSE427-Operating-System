@@ -19,6 +19,13 @@ PCB *head = NULL; // pointer to the first PCB
 PCB *tail = NULL; // pointer to the last PCB
 CPU *kirin990;
 
+int boot()
+{
+    //TODO assignment 3
+    //
+    return 0;
+}
+
 int clearReadyQueue()
 {
     PCB *curr = head;
